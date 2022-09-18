@@ -46,9 +46,13 @@ def server_static(filename="index.html"):
 @post("/add-page")
 def add_server_redirect():
     """Add a new page to redirect to."""
+    # get parameters
     ip = request.forms.get("ip")
     port = request.forms.get("port")
     hostname = request.forms.get("name")
+    scheme = "http"
+
+    # validate parameters
     assert re.match(ValidHostnameRegex, hostname), "Hostname \"{}\" must match \"{}\"".format(hostname, ValidHostnameRegex)
     assert len(hostname) <= CONFIG.maximum_host_name_length, "The hostname \"{}\" must have maximum {} characters.".format(hostname, CONFIG.maximum_host_name_length)
     assert re.match(ValidIpAddressRegex, ip), "IP \"{}\" must match \"{}\"".format(ip, ValidIpAddressRegex)
@@ -56,9 +60,15 @@ def add_server_redirect():
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
     assert ipaddress.ip_address(ip) in CONFIG.network, "IP \"{}\" is expected to be in the CONFIG.network \"{}\"".format(ip, CONFIG.CONFIG.network)
-    website = db,proxy.serve("http", ip, port, hostname)
-    update_nginx()
+
+    # add website
+    source = urllib.parse.urlunsplit((scheme, host + ":" + str(port), "/", "", ""))
+    website = Website(source, hostname, CONFIG)
+    db.proxy.add(website)
+
+    # save configuration
     db.save()
+    update_nginx()
     redirect("/#" + website.id)
 
 

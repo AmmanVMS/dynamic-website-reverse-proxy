@@ -2,6 +2,10 @@ from pytest import fixture
 import os
 import sys
 from .config import Config
+from dynamic_website_reverse_proxy.website import Website
+from dynamic_website_reverse_proxy.proxy import Proxy
+
+
 
 HERE = os.path.dirname(__file__ or ".")
 sys.path.append(os.path.join(HERE, "..", ".."))
@@ -12,16 +16,19 @@ def domain(request):
     """The domain name of the proxy"""
     return request.param
 
+@fixture(params=[80, 8000])
+def http_port(request):
+    """The domain name of the proxy"""
+    return request.param
 
 @fixture
-def config(domain):
+def config(domain, http_port):
     """The config to use."""
-    return Config(domain=domain)
+    return Config(domain=domain, http_port=http_port)
 
 @fixture
 def proxy(config):
     """A Proxy to test."""
-    from dynamic_website_reverse_proxy.proxy import Proxy
     return Proxy(domain)
 
 
@@ -30,17 +37,20 @@ def sub_domain(request):
     return request.param
 
 
-@fixture(params=[("localhost", 9090), ("172.16.0.32", 80)])
-def server_address(request):
+@fixture(params=[
+    "http://localhost:9090",
+    "http://172.16.0.32",
+    "https://other.domain"
+])
+def source(request):
     """A fictive but possible server address."""
     return request.param
 
 
 @fixture
-def website(server_address, sub_domain, proxy):
+def website(source, sub_domain, config):
     """A website to serve."""
-    from freifunk_website_proxy.proxy import Website
-    return Website(server_address, sub_domain, proxy)
+    return Website(source, sub_domain, config)
 
 
 @fixture
