@@ -1,4 +1,5 @@
 from abc import ABC, abstractproperty
+from .users import SYSTEM
 
 class BaseWebsite(ABC):
     """This is a website registered in the proxy."""
@@ -83,3 +84,8 @@ class BaseWebsite(ABC):
     def can_be_edited(self):
         """Whether the user can edit the website."""
         return False
+
+    @property
+    def creator(self):
+        """The user who created this."""
+        return SYSTEM

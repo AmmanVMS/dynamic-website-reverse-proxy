@@ -1,10 +1,9 @@
 
 h2 {
-  width: 100%;
   text-align: center;
 }
 
-p, form {
+p, form, h1, h2, footer {
   max-width: 40em;
   padding-right: 1em;
   padding-left: 1em;
@@ -48,7 +47,6 @@ footer {
   padding-top: 1em;
   padding-right: 1em;
   padding-left: 1em;
-  width: 100%;
   color: #888888;
 }
 

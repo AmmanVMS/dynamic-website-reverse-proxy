@@ -23,6 +23,9 @@ def D(source_url):
 
     ("domain", "123.asd", {"DOMAIN": "123.asd"}),
     ("domain", "test.freifunk.net", {"DOMAIN": "test.freifunk.net"}),
+    # for simple run
+    ("domain", "localhost:9001", {}),
+    ("domain", "localhost:5000", {"PORT":"5000"}),
 
     ("network", ipaddress.ip_network("10.0.0.0/8"), {}),
     ("network", ipaddress.ip_network("10.22.0.0/16"), {"NETWORK": "10.22.0.0/16"}),

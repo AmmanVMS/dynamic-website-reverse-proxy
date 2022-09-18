@@ -28,7 +28,7 @@ class Config:
     @property
     def domain(self):
         """The base domain for the requests."""
-        return self._env.get("DOMAIN")
+        return self._env.get("DOMAIN", f"localhost:{self.app_port}")
 
     @property
     def default_server(self):

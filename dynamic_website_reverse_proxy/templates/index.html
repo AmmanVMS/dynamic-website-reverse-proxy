@@ -12,15 +12,26 @@
     <p>
       With this service, you can make services in the local network available to people on the Internet.
     </p>
+    <form action="/login" method="post" class="bordered">
+      <div class="form-entry">
+        <label for="input-username">Username:</label> <input type="text" name="username"   id="input-username"   placeholder="admin">
+      </div>
+      <div class="form-entry">
+        <label for="input-password">Password:</label> <input type="password" name="password" id="input-password" placeholder="****" value="">
+      </div>
+      <div class="submit">
+        <input type="submit" value="Log In/Register">
+      </div>
+    </form>
     <form action="/add-page" method="post" class="bordered">
       <div class="form-entry">
-        IP:   <input type="text" name="ip"   id="input-ip"   placeholder="{{ config.network.network_address + 1 }}">
+        <label for="input-ip">IP:</label> <input type="text" name="ip"   id="input-ip"   placeholder="{{ config.network.network_address + 1 }}">
       </div>
       <div class="form-entry">
-        Port: <input type="text" name="port" id="input-port" placeholder="80" value="80">
+        <label for="input-port">Port:</label> <input type="text" name="port" id="input-port" placeholder="80" value="80">
       </div>
       <div class="form-entry">
-        Name: <input type="text" name="name" id="input-name" placeholder="my-service">.{{ config.domain }}
+        <label for="input-name">Name:</label> <input type="text" name="name" id="input-name" placeholder="my-service">.{{ config.domain }}
       </div>
       <div class="submit">
         <input type="submit" value="Add this Entry">
@@ -31,16 +42,23 @@
     </p>
     <table class="bordered entry-table">
       <tr id="websites" class="heading">
+        <td></td>
         <td>Domain</td>
         <td>Source</td>
+        <td>Creator</td>
       </tr>
       % for website in sorted(proxy.websites, key=lambda w: w.domain):
-        <tr id="{{ website.id }}">
+        <tr id="{{ website.id }}" class="website">
+          <td class="source">
+          % if website.can_be_edited():
+            <a href="javascript:edit('{{ website.source_url }}', '{{ website.sub_domain }}')">✎</a>
+          % else:
+            🔒
+          % end
+          </td>
           <td class="domain"><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
           <td class="source"><a href="{{ website.source_url }}">{{ website.source_url }}</a></td>
-          % if website.can_be_edited():
-            <td class="source"><a href="javascript:edit('{{ website.source_url }}')">✎</a></td>
-          % end
+          <td class="username">{{ website.creator.name }}</td>
         </tr>
       % end
     </table>

@@ -88,7 +88,11 @@ def get_source():
 
 def main():
     """Run the server app."""
-    update_nginx()
+    try:
+        update_nginx()
+    except:
+        import traceback
+        traceback.print_exc()
     run(port=CONFIG.app_port, debug=CONFIG.debug, host="")
 
 __all__ = ["main"]
