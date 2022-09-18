@@ -40,7 +40,7 @@ class Website:
     configuration_template = """
     server {{
         server_name {domain};
-        listen 0.0.0.0:""" + str(NGINX_PORT) + """;
+        listen 0.0.0.0:{http_port};
         location / {{
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -58,22 +58,46 @@ class Website:
             proxy_max_temp_file_size 0;
             proxy_read_timeout 300;
 
-            proxy_pass http://{host}:{port};
+            proxy_pass {source_url};
         }}
     }}
     """
 
-    def __init__(self, server_address, sub_domain, proxy):
-        """Create a new website."""
-        self.host, self.port = self.address = server_address
-        self.sub_domain = sub_domain
-        self.domain = sub_domain + "." + proxy.domain
-        self.id = self.domain
-        self.proxy = proxy
-        
+    def __init__(self, source_url, sub_domain, config):
+        """Create a new website.
+
+        - source_url - the url of the source
+        - sub_domain - the first part of the domain
+        - config - an object with the attributes
+            - http_port
+            - domain
+        """
+        self._source_url = source_url
+        self._sub_domain = sub_domain
+        self._config = config
+
+    @property
+    def sub_domain(self):
+        """The subdomain part of the proxy domain."""
+        return self._sub_domain
+
+    @property
+    def domain(self):
+        """The domain name to serve the content."""
+        return self.sub_domain + "." + self._config.domain
+
+    @property
+    def source_url(self):
+        """The source url for the content so serve."""
+        return self._source_url
+
     def get_nginx_configuration(self):
         """Return the nginx configuration for the website to serve"""
-        return self.configuration_template.format(host=self.host, port=self.port, domain=self.domain)
+        return self.configuration_template.format(
+            domain = self.domain,
+            http_port = self._config.http_port
+            source_url = self.source_url
+        )
     
     def is_served(self):
         """Whether the proxy serves this website."""
@@ -81,7 +105,7 @@ class Website:
         
     def __eq__(self, other):
         """Return if the two websites are equal."""
-        return isinstance(other, Website) and self.id == other.id and self.address == other.address and self.domain == other.domain
+        return isinstance(other, Website) and self.id == other.id and self.source_url == other.source_url
     
     def __hash__(self):
         """Return the hash value."""
@@ -91,12 +115,22 @@ class Website:
         """Return a text representation."""
         return "<Website {}>".format(self.id)
 
+    @property
+    def id(self):
+        """Attribute to identify this website."""
+        return self.domain
 
-class LocalWebsite(Website):
 
-    def __init__(self, proxy):
-        super().__init__(("localhost", APP_PORT), "", proxy)
-        self.domain = "default_server"
+class DefaultWebsite(Website):
+    """The website served by default."""
+
+    def __init__(self, config):
+        super().__init__()
+
+    @property
+    def domain(self):
+        """Replaces the domain with the nginx wildcard for all other domains."""
+        return "default_server"
 
 
 class Proxy:
@@ -107,17 +141,25 @@ class Proxy:
         
         - domain is the domain name of the service. New entries will be sub-entries of this.
         """
-        self.domain = domain
+        self._domain = domain
         self._websites = {} # domain -> website
         self._local_website = LocalWebsite(self)
 
-    def serve(self, server_address, sub_domain):
+    @property
+    def domain(self):
+        """The base domain for the dynamically configured websites."""
+        return self._domain
+
+    def serve(self, scheme, host, port, subdomain):
         """Serve the content from the server address at the sub_domain.
         
-        - server_address - a tuple of (ip, port)
-        - sub_domain - a valid domain name
+        - scheme - http or https
+        - host - the hostname
+        - port - the port of the host
+        - sub_domain - a valid domain name for a subdomain
         """
-        website = Website(server_address, sub_domain, self)
+        source = urllib.parse.urlunsplit((scheme, host + ":" + port, "/", "", ""))
+        website = Website(source, subdomain, self)
         self._websites[website.id] = website
         return website
     

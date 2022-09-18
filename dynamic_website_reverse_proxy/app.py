@@ -1,44 +1,31 @@
 import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
-from .proxy import Proxy, APP_PORT
 from .nginx import configure_nginx, nginx_is_available
-from .database import Database, NullDatabase
+from .CONFIG.database import CONFIG.database, NullCONFIG.database
 import ipaddress
+from .config import CONFIG
+from .proxy_db import ProxyDB
 
 # environment variables
 HERE = os.path.dirname(__file__ or ".")
-STATIC_FILES = os.path.join(HERE, "static")
-DOMAIN = os.environ.get("DOMAIN", "localhost")
-NETWORK_STRING = os.environ.get("NETWORK", "10.0.0.0/8")
-DATABASE = os.environ.get("DATABASE", "")
-SOURCE_CODE = os.environ.get("SOURCE_CODE", HERE)
-MAXIMUM_HOST_NAME_LENGTH = int(os.environ.get(("MAXIMUM_HOST_NAME_LENGTH", 50))
 
 # constants
 APPLICATION = __name__.split(".")[0]
-NETWORK = ipaddress.ip_network(NETWORK_STRING)
 
 # ValidIpAddressRegex and ValidHostnameRegex from https://stackoverflow.com/a/106223
 ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
 ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
 
-if DATABASE:
-    database = Database(DATABASE, version=2)
-else:
-    database = NullDatabase()
 
-proxy = database.load_safely()
-if proxy is None:
-    proxy = Proxy(DOMAIN)
-
-
+# The database to store the proxy in.
+db = ProxyDB(CONFIG)
 
 def update_nginx():
     """Restart nginx with a new configuration."""
     if nginx_is_available():
         configure_nginx(proxy.get_nginx_configuration())
     else:
-        print(proxy.get_nginx_configuration())
+        print(db.proxy.get_nginx_configuration())
         print("NO NGINX")
 
 
@@ -47,13 +34,13 @@ def landing_page():
     """Redirect users from the landing page to the static files."""
     with open(os.path.join(HERE, "templates", "index.html")) as f:
         landing_page_template = SimpleTemplate(f.read())
-    return landing_page_template.render(proxy=proxy, NETWORK=NETWORK, DOMAIN=DOMAIN)
+    return landing_page_template.render(proxy=db.proxy, config=CONFIG)
 
 
 @route("/static/<filename>")
 def server_static(filename="index.html"):
     """Serve the static files."""
-    return static_file(filename, root=STATIC_FILES)
+    return static_file(filename, root=CONFIG.static_files)
 
 
 @post("/add-page")
@@ -63,15 +50,15 @@ def add_server_redirect():
     port = request.forms.get("port")
     hostname = request.forms.get("name")
     assert re.match(ValidHostnameRegex, hostname), "Hostname \"{}\" must match \"{}\"".format(hostname, ValidHostnameRegex)
-    assert len(hostname) <= MAXIMUM_HOST_NAME_LENGTH, "The hostname \"{}\" must have maximum {} characters.".format(hostname, MAXIMUM_HOST_NAME_LENGTH)
+    assert len(hostname) <= CONFIG.maximum_host_name_length, "The hostname \"{}\" must have maximum {} characters.".format(hostname, CONFIG.maximum_host_name_length)
     assert re.match(ValidIpAddressRegex, ip), "IP \"{}\" must match \"{}\"".format(ip, ValidIpAddressRegex)
     assert port.isdigit(), "A port must be a number, not \"{}\".".format(port)
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
-    assert ipaddress.ip_address(ip) in NETWORK, "IP \"{}\" is expected to be in the network \"{}\"".format(ip, NETWORK_STRING)
-    website = proxy.serve((ip, port), hostname)
+    assert ipaddress.ip_address(ip) in CONFIG.network, "IP \"{}\" is expected to be in the CONFIG.network \"{}\"".format(ip, CONFIG.CONFIG.network)
+    website = db,proxy.serve("http", ip, port, hostname)
     update_nginx()
-    database.save(proxy)
+    db.save()
     redirect("/#" + website.id)
 
 
@@ -82,14 +69,14 @@ def get_source():
     import tempfile, shutil, os
     directory = tempfile.mkdtemp()
     temp_path = os.path.join(directory, APPLICATION)
-    zip_path = shutil.make_archive(temp_path, "zip", SOURCE_CODE)
+    zip_path = shutil.make_archive(temp_path, "zip", CONFIG.source_code)
     return static_file(APPLICATION + ".zip", root=directory)
 
 
 def main():
     """Run the server app."""
     update_nginx()
-    run(port=APP_PORT, debug=True, host="")
+    run(port=CONFIG.app_port, debug=CONFIG.debug, host="")
 
 __all__ = ["main"]
 

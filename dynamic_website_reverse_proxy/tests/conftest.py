@@ -1,33 +1,39 @@
 from pytest import fixture
 import os
 import sys
+from .config import Config
 
 HERE = os.path.dirname(__file__ or ".")
 sys.path.append(os.path.join(HERE, "..", ".."))
 
 
-@fixture
-def domain():
+@fixture(params=["proxy.freifunk.net", "in.net"])
+def domain(request):
     """The domain name of the proxy"""
-    return "proxy.freifunk.net"
+    return request.param
 
 
 @fixture
-def proxy(domain):
+def config(domain)
+    """The config to use."""
+    return Config(domain=domain)
+
+@fixture
+def proxy(config):
     """A Proxy to test."""
-    from freifunk_website_proxy.proxy import Proxy
+    from dynamic_website_reverse_proxy.proxy import Proxy
     return Proxy(domain)
 
 
-@fixture
-def sub_domain():
-    return "test"
+@fixture(params=["test", "sub.domain"])
+def sub_domain(request):
+    return request.param
 
 
-@fixture
-def server_address():
+@fixture(params=[("localhost", 9090), ("172.16.0.32", 80)])
+def server_address(request):
     """A fictive but possible server address."""
-    return ("localhost", 9090)
+    return request.param
 
 
 @fixture

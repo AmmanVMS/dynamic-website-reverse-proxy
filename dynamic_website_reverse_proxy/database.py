@@ -10,7 +10,7 @@ import threading
 class Database:
     """Save and store data in a file"""
     
-    def __init__(self, file, version=1):
+    def __init__(self, file, version=2):
         """Create a new database which saves and loads objects from a file.
         
         - version is the version number of the database.
@@ -55,6 +55,14 @@ class Database:
             traceback.print_exc()
             return None
 
+    def is_persistent(self):
+        """This db is persistent."""
+        return True
+
+    @property
+    def location(self):
+        """The location of the persisted data."""
+
 
 class NullDatabase:
     """This is a database which can not store anything."""
@@ -67,6 +75,10 @@ class NullDatabase:
         return None
     load_safely = load
 
+    def is_persistent(self):
+        """This db is not persistent."""
+        return False
 
-__all__ = ["Database"]
+
+__all__ = ["Database", "NullDatabase"]
 

@@ -15,13 +15,13 @@
     </p>
     <form action="/add-page" method="post" class="bordered">
       <div class="form-entry">
-        IP:   <input type="text" name="ip"   id="input-ip"   placeholder="{{ NETWORK.network_address + 1 }}">
+        IP:   <input type="text" name="ip"   id="input-ip"   placeholder="{{ config.network.network_address + 1 }}">
       </div>
       <div class="form-entry">
         Port: <input type="text" name="port" id="input-port" placeholder="80" value="80">
       </div>
       <div class="form-entry">
-        Name: <input type="text" name="name" id="input-name" placeholder="chocolate">.{{DOMAIN}}
+        Name: <input type="text" name="name" id="input-name" placeholder="my-service">.{{ config.domain }}
       </div>
       <div class="submit">
         <input type="submit" value="Eintragen">

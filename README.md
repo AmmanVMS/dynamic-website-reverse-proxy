@@ -76,10 +76,18 @@ This is the configuration you should touch:
 - `DEFAULT_SERVER` default `localhost:$PORT`  
   The website served for each hostname that is not registered.
   By default, this will be the overview page of the web app.
+- `DEFAULT_DOMAINS` default ``  
+  This is a comma separated list of domain forwards for the nginx proxy. Examples:
+  - `service.example.com->http://localhost:9001` serves the page when the domain `service.example.com` is requested.
+  - `service.example.com->http://172.16.0.21` serves `172.16.0.21` when the domain `service.example.com` is requested.
+  - `test1.example.com->http://172.16.0.21,test2.example.com->http://172.16.0.21` serves `http://172.16.0.21` for the domains `test1.example.com` and `test2.example.com`.
 - `PORT` default `9001`  
   This is the port on which the app listens for connections.
-- `NGINX_PORT` default `80`  
+- `HTTP_PORT` default `80`  
   This is the port on which nginx listens for connections.
+- `DEBUG` default `true`  
+  Can be `true` or `false`.
+  A flag to make the app output more details when a crash happens.
 
 This is configuration you can touch:
 - `DATABASE`  
