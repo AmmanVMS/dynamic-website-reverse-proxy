@@ -18,6 +18,12 @@ Then, you go to this service installation for your community.
 You put in your IP address, your server name and your port.
 When you submit, your website should be available under the hostname you entered.
 
+### Docker Image
+
+The server is available as a docker image from [niccokunzmann/dynamic-website-reverse-proxy](https://hub.docker.com/r/niccokunzmann/dynamic-website-reverse-proxy).
+
+    docker pull niccokunzmann/dynamic-website-reverse-proxy
+
 Setting up a Server
 -------------------
 
