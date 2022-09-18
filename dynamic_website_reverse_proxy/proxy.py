@@ -61,7 +61,14 @@ class Proxy:
     @property
     def websites(self):
         """Read-only access to the websites of the proxy."""
-        return list(self._websites.values())
+        websites = self._websites.copy()
+        for website in self._config.websites:
+            websites[website.id] = website
+        return list(websites.values())
+
+    def reload(self, config):
+        """Change the configuration of the proxy."""
+        self._config = config
             
 
 __all__ = ["Proxy"]

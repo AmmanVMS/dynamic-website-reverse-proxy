@@ -1,4 +1,4 @@
-from freifunk_website_proxy.app import main
+from dynamic_website_reverse_proxy.app import main
 
 main()
 

@@ -25,12 +25,12 @@ def http_port(request):
 @fixture
 def config(domain, http_port):
     """The config to use."""
-    return Config(domain=domain, http_port=http_port)
+    return Config(domain=domain, http_port=http_port, websites=[])
 
 @fixture
 def proxy(config):
     """A Proxy to test."""
-    return Proxy(domain)
+    return Proxy(config)
 
 
 @fixture(params=["test", "sub.domain"])

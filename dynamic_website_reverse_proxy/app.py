@@ -1,7 +1,6 @@
 import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
 from .nginx import configure_nginx, nginx_is_available
-from .CONFIG.database import CONFIG.database, NullCONFIG.database
 import ipaddress
 from .config import CONFIG
 from .proxy_db import ProxyDB
@@ -20,7 +19,7 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 # The database to store the proxy in.
 db = ProxyDB(CONFIG)
 # make sure the proxy uses the updated environment variables
-db.proxy.reconfigure()
+db.proxy.reload(CONFIG)
 
 def update_nginx():
     """Restart nginx with a new configuration."""
@@ -30,7 +29,7 @@ def update_nginx():
         print(db.proxy.get_nginx_configuration())
         print("NO NGINX")
 
-
+    
 @route("/")
 def landing_page():
     """Redirect users from the landing page to the static files."""

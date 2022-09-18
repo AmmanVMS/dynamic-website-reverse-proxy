@@ -76,7 +76,7 @@ class Website:
     
     def __repr__(self):
         """Return a text representation."""
-        return "<Website {}>".format(self.id)
+        return f"<Website {self.domain} -> {self.source_url}>"
 
     @property
     def id(self):
