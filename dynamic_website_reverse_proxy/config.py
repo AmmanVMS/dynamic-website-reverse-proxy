@@ -3,6 +3,9 @@
 """
 import os
 import ipaddress
+from .default_website import DefaultWebsite
+from .full_website import FullWebsite
+
 
 
 class Config:
@@ -75,6 +78,20 @@ class Config:
     def network(self):
         """The network to choose ip addresses from that are targets."""
         return ipaddress.ip_network(self._env.get("NETWORK", "10.0.0.0/8"))
+
+    @property
+    def websites(self):
+        """A list of websites configured by the environment."""
+        websites = [DefaultWebsite(self.default_server, self)]
+        spec = self._env.get("DEFAULT_DOMAINS", "")
+        for entry in spec.split(","):
+            if not entry:
+                continue
+            domain, source = entry.split("->")
+            domain = domain.strip()
+            source = source.strip()
+            websites.append(FullWebsite(source, domain, self))
+        return websites
 
 
 class EnvConfig(Config):

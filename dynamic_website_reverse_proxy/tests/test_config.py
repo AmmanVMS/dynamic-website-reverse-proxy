@@ -3,12 +3,19 @@
 import os
 import sys
 from dynamic_website_reverse_proxy.config import Config, from_environment
+from dynamic_website_reverse_proxy.full_website import FullWebsite
+from dynamic_website_reverse_proxy.default_website import DefaultWebsite
 import ipaddress
 import pytest
 import pickle
+from .config import Config as TestConfig
 
 HERE = os.path.dirname(__file__ or ".")
 HERE_PARENT = os.path.dirname(HERE)
+
+def D(source_url):
+    """Shortcut for creating a list of default websites."""
+    return [DefaultWebsite(source_url, Config({}))]
 
 @pytest.mark.parametrize("attr,expected,env", [
     ("here", HERE_PARENT, {}),
@@ -46,6 +53,11 @@ HERE_PARENT = os.path.dirname(HERE)
     ("default_server", "http://localhost:4000", {"PORT": "4000"}),
     ("default_server", "http://test.example.com", {"DEFAULT_SERVER": "test.example.com"}),
     ("default_server", "https://test.example.com", {"DEFAULT_SERVER": "https://test.example.com"}),
+
+    ("websites", D("http://localhost:9001"), {}),
+    ("websites", D("http://localhost:4000"), {"PORT": "4000"}),
+    ("websites", D("http://test.example.com"), {"DEFAULT_SERVER": "test.example.com"}),
+    ("websites", D("https://test.example.com"), {"DEFAULT_SERVER": "https://test.example.com"}),
 ])
 def test_parsing(attr, expected, env):
     """Test the parsing of the configuration."""
@@ -92,5 +104,19 @@ def test_from_env_changes_when_env_changes(expected, env_value, key, attr):
     os.environ[key] = env_value
     conf = from_environment()
     value = getattr(conf, attr)
-    assert value == expected    
-    
+    assert value == expected
+
+
+C = TestConfig(domain="sub.example.com")
+@pytest.mark.parametrize("DEFAULT_DOMAINS,websites", [
+    ("service.example.com->http://localhost:9001", [FullWebsite("http://localhost:9001", "service.example.com", C)]),
+    ("service.example.com->http://172.16.0.21", [FullWebsite("http://172.16.0.21", "service.example.com", C)]),
+    ("test1.example.com->http://172.16.0.21,test2.example.com->http://172.16.0.21", [FullWebsite("http://172.16.0.21", "test1.example.com", C), FullWebsite("http://172.16.0.21", "test2.example.com", C)]),
+    ("service.example.com->http://localhost:9001,service.example.com->http://172.16.0.21", [FullWebsite("http://localhost:9001", "service.example.com", C), FullWebsite("http://172.16.0.21", "service.example.com", C)]),
+    ("a.sub.example.com -> http://localhost:9001 ", [FullWebsite("http://localhost:9001", "a.sub.example.com", C)]),
+])
+def test_websites(DEFAULT_DOMAINS, websites):
+    config = Config({"DEFAULT_DOMAINS": DEFAULT_DOMAINS, "DOMAIN":"sub.example.com"})
+    assert len(config.websites) == len(websites) + 1
+    for website in websites:
+        assert website in config.websites
