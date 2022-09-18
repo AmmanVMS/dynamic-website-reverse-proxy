@@ -5,16 +5,18 @@ from .nginx import configure_nginx, nginx_is_available
 from .database import Database, NullDatabase
 import ipaddress
 
+# environment variables
 HERE = os.path.dirname(__file__ or ".")
 STATIC_FILES = os.path.join(HERE, "static")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
 NETWORK_STRING = os.environ.get("NETWORK", "10.0.0.0/8")
 DATABASE = os.environ.get("DATABASE", "")
 SOURCE_CODE = os.environ.get("SOURCE_CODE", HERE)
-APPLICATION = __name__.split(".")[0]
+MAXIMUM_HOST_NAME_LENGTH = int(os.environ.get(("MAXIMUM_HOST_NAME_LENGTH", 50))
 
+# constants
+APPLICATION = __name__.split(".")[0]
 NETWORK = ipaddress.ip_network(NETWORK_STRING)
-MAXIMUM_HOST_NAME_LENGTH = 50
 
 # ValidIpAddressRegex and ValidHostnameRegex from https://stackoverflow.com/a/106223
 ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"

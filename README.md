@@ -71,6 +71,8 @@ This is the configuration you should touch:
 - `NETWORK` default `10.0.0.0/8`  
   This is the network address of the accepted services.
   I.e. Freifunk in Potsdam covers `10.22.0.0/16`.
+- `MAXIMUM_HOST_NAME_LENGTH` default `50`  
+  This is the maximum length of a host name.
 
 This is configuration you can touch:
 - `DATABASE`  
