@@ -16,7 +16,6 @@ def test_http_port_is_considered(website, http_port):
 
 
 def test_domain_attibute(website, domain, sub_domain):
-    assert website.domain == website.id
     assert website.domain == f"{sub_domain}.{domain}"
 
 

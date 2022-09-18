@@ -81,4 +81,4 @@ class Website:
     @property
     def id(self):
         """Attribute to identify this website."""
-        return self.domain
+        return self.sub_domain
