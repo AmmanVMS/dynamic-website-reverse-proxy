@@ -6,6 +6,11 @@
 name: build-docker-image
 
 on:
+  # run on new commits on the branch
+  # see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
+  push:
+    branches:
+      - master
   schedule:
   # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
   # see https://crontab.guru/every-month
