@@ -1,7 +1,7 @@
-"""Simple config class for the tests"""
+
 
 class Config:
-    """A test config."""
+    """Simple config class for the tests"""
     def __init__(self, **kw):
         self.__dict__.update(kw)
 

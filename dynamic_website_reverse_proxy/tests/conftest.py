@@ -14,7 +14,7 @@ def domain(request):
 
 
 @fixture
-def config(domain)
+def config(domain):
     """The config to use."""
     return Config(domain=domain)
 

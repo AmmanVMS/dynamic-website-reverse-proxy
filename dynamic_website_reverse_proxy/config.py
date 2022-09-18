@@ -6,6 +6,9 @@ import os
 class Config:
     """User configuration of the app."""
 
+    def __init__(self, environment):
+        """Create a new Config objeict configured by an environment dictionary."""
+
     @property
     def here(self):
         """The location of the app"""

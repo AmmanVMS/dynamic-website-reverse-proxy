@@ -4,6 +4,7 @@ import os
 import sys
 from dynamic_website_reverse_proxy.config import Config, from_environment
 import ipaddress
+import pytest
 
 HERE = os.path.dirname(__file__ or ".")
 HERE_PARENT = os.path.dirname(HERE)
@@ -84,7 +85,6 @@ def test_pickled_env_config_is_identical():
 @pytest.mark.parametrize("expected,env_value,key,attr", [
     (True, "true", "DEBUG", "debug"),
     (False, "false", "DEBUG", "debug"),
-)
 ])
 def test_from_env_changes_when_env_changes(expected, env_value, key, attr):
     os.environ[key] = env_value

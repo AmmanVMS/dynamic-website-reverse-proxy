@@ -4,8 +4,6 @@ This module is the interface to the http proxy.
 """
 import os
 
-APP_PORT = int(os.environ.get(("PORT", 9001))
-NGINX_PORT = int(os.environ.get(("NGINX_PORT", 80))
 
 NGINX_CONFIGURATION = """
 #
@@ -95,8 +93,8 @@ class Website:
         """Return the nginx configuration for the website to serve"""
         return self.configuration_template.format(
             domain = self.domain,
-            http_port = self._config.http_port
-            source_url = self.source_url
+            http_port = self._config.http_port,
+            source_url = self.source_url,
         )
     
     def is_served(self):
@@ -179,5 +177,5 @@ class Proxy:
         return list(self._websites.values())
             
 
-__all__ = ["Proxy", "APP_PORT"]
+__all__ = ["Proxy"]
 
