@@ -47,7 +47,7 @@ class Website:
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header User-Agent $http_user_agent;
 
-            client_max_body_size 100M;
+#            client_max_body_size 100M;
             client_body_buffer_size 1m;
             proxy_intercept_errors on;
             proxy_buffering on;
