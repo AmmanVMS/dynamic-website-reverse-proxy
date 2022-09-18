@@ -120,8 +120,9 @@ Run the tests
 
     watch -n 0.5 pytest
 
-Further Reading
----------------
+Related Work
+------------
 
 - [Diskussion im FreiFunk-Forum](https://forum.freifunk.net/t/lokale-webdienste-freigeben/18625)
+- [Freifunk-Website-Proxy](https://github.com/Freifunk-Potsdam/freifunk-website-proxy) - this project's base
 
