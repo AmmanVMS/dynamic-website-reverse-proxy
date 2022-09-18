@@ -51,8 +51,23 @@ class Config:
         """The directory with the source code."""
 
 
+class EnvConfig(Config):
+    """An environment configuration.
+
+    Singleton.
+    """
+
+    def __init__(self):
+        """Create a new config from the environment."""
+        super().__init__(os.environ)
+
+    def __reduce__(self):
+        return "CONFIG"
+
+
+CONFIG = EnvConfig()
+
 def from_environment():
     """The configuration loaded from environment variables."""
-    return Config(os.environ)
+    return CONFIG
 
-CONFIG = from_environment()

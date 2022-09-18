@@ -5,6 +5,7 @@ import sys
 from dynamic_website_reverse_proxy.config import Config, from_environment
 import ipaddress
 import pytest
+import pickle
 
 HERE = os.path.dirname(__file__ or ".")
 HERE_PARENT = os.path.dirname(HERE)
