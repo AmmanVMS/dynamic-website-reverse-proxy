@@ -1,51 +1,48 @@
-from pytest import mark
-import os
+"""Tests for proxies.
+
+"""
+from dynamic_website_reverse_proxy.website import Website
 
 
-def test_proxy_has_no_entries(proxy):
+
+def test_initial_proxy_has_no_entries(proxy):
     assert len(proxy.websites) == 0
 
 
-entries = mark.parametrize("sub_domain,port,host", [
-    ("test", 8008, "localhost"),
-    ("ffasd", 800, "quelltext.eu")])
-
-@entries
-def test_website_has_attributes(proxy, domain, sub_domain, port, host):
-    proxy.serve((host, port), sub_domain)
+def test_add_website(proxy, website):
+    proxy.add(website)
     assert len(proxy.websites) == 1
-    website = proxy.websites[0]
-    assert website.host == host
-    assert website.port == port
-    assert website.domain == sub_domain + "." + domain
+    assert proxy.websites[0] == website
 
 
-@entries
-def test_proxy_updates(proxy, domain, sub_domain, port, host):
-    website = proxy.serve((host, port), sub_domain)
+def test_add_website_twice_does_nothing(proxy, website):
+    proxy.add(website)
+    proxy.add(website)
+    assert len(proxy.websites) == 1
+    assert proxy.websites[0] == website
+
+
+def test_proxy_includes_website_configuration_if_added(proxy, website):
+    proxy.add(website)
     assert website.get_nginx_configuration() in proxy.get_nginx_configuration()
 
 
-class TestServingWebsites:
-    """Test serving mutiple websites"""
-
-    def test_entries_with_same_domain_name_are_replaced_if_port_differs(self, proxy):
-        website1 = proxy.serve(("10.22.254.111", 80), "test1")
-        website2 = proxy.serve(("10.22.254.111", 81), "test1")
-        assert not website1.is_served()
-        assert website2.is_served()
+def test_proxy_includes_no_website_configuration(proxy, website):
+    assert website.get_nginx_configuration() not in proxy.get_nginx_configuration()
 
 
-    def test_entries_with_same_domain_name_are_replaced_if_ip_differs(self, proxy):
-        website1 = proxy.serve(("10.22.254.111", 80), "test1")
-        website2 = proxy.serve(("10.22.254.112", 80), "test1")
-        assert not website1.is_served()
-        assert website2.is_served()
+def test_entries_with_same_domain_name_are_replaced_if_source_differs(proxy, website, sub_domain, config, source):
+    proxy.add(website)
+    website2 = Website("http://replaced-source.com", sub_domain, config)
+    proxy.add(website2)
+    assert website not in proxy.websites
+    assert website2 in proxy.websites
 
 
-    def test_entries_with_different_domain_name_are_not_replaced(self, proxy):
-        website1 = proxy.serve(("10.22.254.111", 80), "test2")
-        website2 = proxy.serve(("10.22.254.112", 80), "test1")
-        assert website1.is_served()
-        assert website2.is_served()
+def test_entries_with_different_domain_name_are_not_replaced(proxy, website, sub_domain, config, source):
+    proxy.add(website)
+    website2 = Website(source, "other-subdomain", config)
+    proxy.add(website2)
+    assert website in proxy.websites
+    assert website2 in proxy.websites
 

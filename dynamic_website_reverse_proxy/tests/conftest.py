@@ -4,6 +4,7 @@ import sys
 from .config import Config
 from dynamic_website_reverse_proxy.website import Website
 from dynamic_website_reverse_proxy.proxy import Proxy
+from dynamic_website_reverse_proxy.database import Database
 
 
 
@@ -55,7 +56,6 @@ def website(source, sub_domain, config):
 
 @fixture
 def db(tmpdir):
-    from freifunk_website_proxy.database import Database
     file = str(tmpdir.mkdir("sub").join("db.txt"))
     return Database(file)
 

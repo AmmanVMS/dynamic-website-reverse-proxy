@@ -1,3 +1,6 @@
+from dynamic_website_reverse_proxy.database import Database
+
+
 
 def test_save_and_load(db):
     """Save something and load it."""
@@ -22,7 +25,6 @@ def test_saving_again_uses_new_object(db):
 
 
 def test_creating_a_database_with_same_file_loads_same_contents(db):
-    from freifunk_website_proxy.database import Database
     db2 = Database(db.file)
     db.save(1234)
     assert db2.load() == 1234

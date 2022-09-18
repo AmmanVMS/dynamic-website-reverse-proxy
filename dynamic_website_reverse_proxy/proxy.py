@@ -40,7 +40,7 @@ class Proxy:
         
         - domain is the domain name of the service. New entries will be sub-entries of this.
         """
-        self._websites = set()
+        self._websites = {} # id -> website
         self._config = config
 
     @property
@@ -50,22 +50,18 @@ class Proxy:
 
     def add(self, website):
         """Add a website to the set of websites to serve."""
-        self._websites.add(website)
+        self._websites[website.id] = website
         return website
     
     def get_nginx_configuration(self):
         """Get the nginx configuration."""
-        websites = [website.get_nginx_configuration() for website in self._websites]
+        websites = [website.get_nginx_configuration() for website in self.websites]
         return self.NGINX_CONFIGURATION.format(websites="\n".join(websites))
-    
-    def is_serving(self, website):
-        """Whether the proxy is serving a website under this address."""
-        return website in self._websites
     
     @property
     def websites(self):
         """Read-only access to the websites of the proxy."""
-        return list(self._websites)
+        return list(self._websites.values())
             
 
 __all__ = ["Proxy"]

@@ -19,6 +19,8 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 
 # The database to store the proxy in.
 db = ProxyDB(CONFIG)
+# make sure the proxy uses the updated environment variables
+db.proxy.reconfigure()
 
 def update_nginx():
     """Restart nginx with a new configuration."""
