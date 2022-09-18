@@ -8,16 +8,28 @@ name: build-docker-image
 on:
   # run on new commits on the branch
   # see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
-  push:
-    branches:
-      - master
-  schedule:
+#  push:
+#    branches:
+#      - master
+#  schedule:
   # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
   # see https://crontab.guru/every-month
-  - cron: '0 0 1 * *'
+#  - cron: '0 0 1 * *'
+  # only run when the workflow for the tests completed
+  # see https://stackoverflow.com/a/64733705/1320237
+  workflow_run:
+    workflows:
+      - tests
+    branches:
+      - master
+    types: 
+      - completed
 
 jobs:
   docker:
+    # only run if the tests succeed
+    # see https://stackoverflow.com/a/68078768/1320237
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       -
