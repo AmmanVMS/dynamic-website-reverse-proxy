@@ -25,3 +25,7 @@ class Website(BaseWebsite):
     def domain(self):
         """The domain name to serve the content."""
         return self.sub_domain + "." + self._config.domain
+
+    def can_be_edited(self):
+        """Whether the user can edit the website."""
+        return True

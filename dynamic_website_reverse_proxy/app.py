@@ -3,7 +3,7 @@ from bottle import run, route, static_file, redirect, post, request, re, SimpleT
 from .nginx import configure_nginx, nginx_is_available
 import ipaddress
 from .config import CONFIG
-from .proxy_db import ProxyDB
+from .app_db import AppDB
 from .website import Website
 import urllib
 
@@ -19,7 +19,7 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 
 
 # The database to store the proxy in.
-db = ProxyDB(CONFIG)
+db = AppDB(CONFIG)
 # make sure the proxy uses the updated environment variables
 db.proxy.reload(CONFIG)
 

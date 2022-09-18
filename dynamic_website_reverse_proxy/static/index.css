@@ -4,7 +4,7 @@ h2 {
   text-align: center;
 }
 
-p {
+p, form {
   max-width: 40em;
   padding-right: 1em;
   padding-left: 1em;
@@ -33,7 +33,7 @@ form {
 }
 
 .entry-table td {
-  padding: 0.1em;
+  padding: 0.3em;
   border-top-style: solid;
   border-top-width: 1px;
   border-top-color: #888888;

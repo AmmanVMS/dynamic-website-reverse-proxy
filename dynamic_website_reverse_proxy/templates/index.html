@@ -4,14 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="/static/index.css">
-    <title>Freifunk Website Proxy</title>
+    <script async="" src="static/index.js"></script>
+    <title>Dynamic Website Configuration</title>
   </head>
   <body>
-    <h2>Freifunk Website Proxy</h2>
+    <h2>Dynamic Website Configuration</h2>
     <p>
-      Du hast eine Webseite im Freifunknetz?
-      Mit diesem Proxy kannst du die über das Internet und einen selbstgewählten Namen
-      erreichbar machen.
+      With this service, you can make services in the local network available to people on the Internet.
     </p>
     <form action="/add-page" method="post" class="bordered">
       <div class="form-entry">
@@ -24,11 +23,11 @@
         Name: <input type="text" name="name" id="input-name" placeholder="my-service">.{{ config.domain }}
       </div>
       <div class="submit">
-        <input type="submit" value="Eintragen">
+        <input type="submit" value="Add this Entry">
       </div>
     </form>
     <p>
-      Folgende Adressen sind schon eingetragen:
+      The following addresses are up and running:
     </p>
     <table class="bordered entry-table">
       <tr id="websites" class="heading">
@@ -38,14 +37,17 @@
       % for website in sorted(proxy.websites, key=lambda w: w.domain):
         <tr id="{{ website.id }}">
           <td class="domain"><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
-          <td class="source"><a href="http://{{ website.source_url }}">{{ website.source_url }}</a></td>
+          <td class="source"><a href="{{ website.source_url }}">{{ website.source_url }}</a></td>
+          % if website.can_be_edited():
+            <td class="source"><a href="javascript:edit('{{ website.source_url }}')">✎</a></td>
+          % end
         </tr>
       % end
     </table>
     <footer>
-      Du kannst mithelfen und <a href="https://github.com/AmmanVMS/dynamic-website-reverse-proxy">diesen Dienst verbessern</a>.
-      Dieser Dienst steht unter <a href="https://opensource.org/licenses/AGPL-3.0">AGPL v3.0</a>.
-      Der Quelltext kann <a href="/source.zip">heruntergeladen werden</a>.
+      You can help to <a href="https://github.com/AmmanVMS/dynamic-website-reverse-proxy">improve this service</a>.
+      This service is licensed under <a href="https://opensource.org/licenses/AGPL-3.0">AGPL v3.0</a>.
+      You can <a href="/source.zip">download the source code</a>.
     </footer>
   </body>
 </html>

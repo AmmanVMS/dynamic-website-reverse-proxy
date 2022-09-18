@@ -53,3 +53,7 @@ class DefaultWebsite(Website):
     def id(self):
         """The id of the default website. There is only one."""
         return DEFAULT_WEBSITE_ID
+
+    def can_be_edited(self):
+        """Whether the user can edit the website."""
+        return False

@@ -80,4 +80,6 @@ class BaseWebsite(ABC):
             return self.sub_domain
         return self.domain
 
-
+    def can_be_edited(self):
+        """Whether the user can edit the website."""
+        return False
