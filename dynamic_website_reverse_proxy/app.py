@@ -4,6 +4,8 @@ from .nginx import configure_nginx, nginx_is_available
 import ipaddress
 from .config import CONFIG
 from .proxy_db import ProxyDB
+from .website import Website
+import urllib
 
 # environment variables
 HERE = os.path.dirname(__file__ or ".")
@@ -24,7 +26,7 @@ db.proxy.reload(CONFIG)
 def update_nginx():
     """Restart nginx with a new configuration."""
     if nginx_is_available():
-        configure_nginx(proxy.get_nginx_configuration())
+        configure_nginx(db.proxy.get_nginx_configuration())
     else:
         print(db.proxy.get_nginx_configuration())
         print("NO NGINX")
@@ -63,7 +65,7 @@ def add_server_redirect():
     assert ipaddress.ip_address(ip) in CONFIG.network, "IP \"{}\" is expected to be in the CONFIG.network \"{}\"".format(ip, CONFIG.CONFIG.network)
 
     # add website
-    source = urllib.parse.urlunsplit((scheme, host + ":" + str(port), "/", "", ""))
+    source = urllib.parse.urlunsplit((scheme, ip + ":" + str(port), "/", "", ""))
     website = Website(source, hostname, CONFIG)
     db.proxy.add(website)
 

@@ -33,19 +33,17 @@
     <table class="bordered entry-table">
       <tr id="websites" class="heading">
         <td>Domain</td>
-        <td>IP</td>
-        <td>Port</td>
+        <td>Source</td>
       </tr>
       % for website in sorted(proxy.websites, key=lambda w: w.domain):
         <tr id="{{ website.id }}">
           <td class="domain"><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
-          <td class="ip"><a href="http://{{ website.host }}:{{ website.port }}">{{ website.host }}</a></td>
-          <td class="port">{{ website.port }}</td>
+          <td class="source"><a href="http://{{ website.source_url }}">{{ website.source_url }}</a></td>
         </tr>
       % end
     </table>
     <footer>
-      Du kannst mithelfen und <a href="https://github.com/niccokunzmann/freifunk-website-proxy">diesen Dienst verbessern</a>.
+      Du kannst mithelfen und <a href="https://github.com/AmmanVMS/dynamic-website-reverse-proxy">diesen Dienst verbessern</a>.
       Dieser Dienst steht unter <a href="https://opensource.org/licenses/AGPL-3.0">AGPL v3.0</a>.
       Der Quelltext kann <a href="/source.zip">heruntergeladen werden</a>.
     </footer>

@@ -14,7 +14,7 @@ class Proxy:
     #
 
     worker_processes  2;
-    #error_log /dev/stdout debug;
+    error_log /dev/stdout debug;
 
     events {{
         worker_connections  1024;

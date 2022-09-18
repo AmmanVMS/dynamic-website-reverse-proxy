@@ -12,7 +12,7 @@ def test_domain_is_used(website, domain, sub_domain):
 
 
 def test_http_port_is_considered(website, http_port):
-    assert f"listen 0.0.0.0:{http_port};" in website.get_nginx_configuration()
+    assert f"listen {http_port};" in website.get_nginx_configuration()
 
 
 def test_domain_attibute(website, domain, sub_domain):

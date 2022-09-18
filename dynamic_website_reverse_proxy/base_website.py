@@ -6,7 +6,7 @@ class BaseWebsite(ABC):
     configuration_template = """
     server {{
         server_name {domain};
-        listen 0.0.0.0:{http_port};
+        listen {http_port};
         location / {{
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
