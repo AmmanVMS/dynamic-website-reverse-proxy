@@ -113,7 +113,7 @@ Development
 
 Run the server
 
-    python3 -m freifunk_website_proxy
+    python3 -m dynamic_website_reverse_proxy
 
 Build the server and run it 
 
@@ -123,7 +123,7 @@ Now, you can reach your server under http://localhost:9000.
 
 Run the tests
 
-    watch -n 0.5 pytest
+    tox
 
 Related Work
 ------------
