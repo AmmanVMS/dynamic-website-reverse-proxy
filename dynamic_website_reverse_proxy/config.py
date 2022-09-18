@@ -2,12 +2,15 @@
 
 """
 import os
+import ipaddress
+
 
 class Config:
     """User configuration of the app."""
 
     def __init__(self, environment):
         """Create a new Config objeict configured by an environment dictionary."""
+        self._env = environment
 
     @property
     def here(self):
@@ -17,44 +20,67 @@ class Config:
     @property
     def static_files(self):
         """The location of the app static files to serve"""
+        return os.path.join(self.here, "static")
 
     @property
     def domain(self):
         """The base domain for the requests."""
+        return self._env.get("DOMAIN")
 
     @property
     def default_server(self):
         """The domain for the default server serve content for unknown host names."""
+        url = self._env.get("DEFAULT_SERVER")
+        if not url:
+            url = f"localhost:{self.app_port}"
+        if not url.startswith("http://") and not url.startswith("https://") :
+            url = "http://" + url
+        return url
 
     @property
     def debug(self):
         """Whether to show more output when an error happens."""
+        return self._env.get("DEBUG", "").lower() != "false" 
 
     @property
     def database(self):
         """The database to store the user configuration in."""
+        location = self._env.get("DATABASE", "")
+        from .database import NullDatabase, Database
+        if not location:
+            return NullDatabase()
+        return Database(location)
 
     @property
     def app_port(self):
         """The port for the web app."""
+        return int(self._env.get("PORT", 9001))
 
     @property
     def http_port(self):
         """The port for http requests to nginx."""
+        return int(self._env.get("HTTP_PORT", 80))
 
     @property
     def maximum_host_name_length(self):
         """The maximum length of a host name entered by a user."""
+        return int(self._env.get("MAXIMUM_HOST_NAME_LENGTH", 50))
 
     @property
     def source_code(self):
         """The directory with the source code."""
+        return self._env.get("SOURCE_CODE", self.here)
+
+    @property
+    def network(self):
+        """The network to choose ip addresses from that are targets."""
+        return ipaddress.ip_network(self._env.get("NETWORK", "10.0.0.0/8"))
 
 
 class EnvConfig(Config):
     """An environment configuration.
 
-    Singleton.
+    Singleton. Use from_environment().
     """
 
     def __init__(self):

@@ -62,6 +62,7 @@ class Database:
     @property
     def location(self):
         """The location of the persisted data."""
+        return self.file
 
 
 class NullDatabase:

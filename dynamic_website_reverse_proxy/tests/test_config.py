@@ -17,6 +17,7 @@ HERE_PARENT = os.path.dirname(HERE)
     ("domain", "123.asd", {"DOMAIN": "123.asd"}),
     ("domain", "test.freifunk.net", {"DOMAIN": "test.freifunk.net"}),
 
+    ("network", ipaddress.ip_network("10.0.0.0/8"), {}),
     ("network", ipaddress.ip_network("10.22.0.0/16"), {"NETWORK": "10.22.0.0/16"}),
     ("network", ipaddress.ip_network("172.16.9.0/24"), {"NETWORK": "172.16.9.0/24"}),
 
@@ -49,18 +50,18 @@ HERE_PARENT = os.path.dirname(HERE)
 def test_parsing(attr, expected, env):
     """Test the parsing of the configuration."""
     config = Config(env)
-    config_value = getattr(config, value)
-    assert config_value == expected
+    config_value = getattr(config, attr)
+    assert config_value == expected, f"config.{attr} - {env}"
 
 @pytest.mark.parametrize("is_persistent,env", [
-    (True, {}),
-    (False, {"DATABASE": "/tmp/db.pickle"}),
-    (False, {"DATABASE": "/volume/db.pickle"}),
+    (False, {}),
+    (True, {"DATABASE": "/tmp/db.pickle"}),
+    (True, {"DATABASE": "/volume/db.pickle"}),
 ])
 def test_database_type(is_persistent, env):
     """Which database to use."""
     config = Config(env)
-    assert proxy.database.is_persistent() == is_persistent
+    assert config.database.is_persistent() == is_persistent
 
 
 @pytest.mark.parametrize("env", [
@@ -70,7 +71,7 @@ def test_database_type(is_persistent, env):
 def test_database_location(env):
     """Test where to store data."""
     config = Config(env)
-    assert proxy.database.location == env["DATABASE"]
+    assert config.database.location == env["DATABASE"]
 
 
 def test_pickled_env_config_is_identical():
