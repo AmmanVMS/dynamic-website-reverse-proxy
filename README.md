@@ -1,6 +1,7 @@
-Freifunk Website Proxy
-======================
+Dynamic Website Reverse Proxy
+=============================
 
+TODO
 [![Build Status](https://travis-ci.org/Freifunk-Potsdam/freifunk-website-proxy.svg?branch=master)](https://travis-ci.org/Freifunk-Potsdam/freifunk-website-proxy)
 [![Docker Build Status](https://img.shields.io/docker/build/niccokunzmann/freifunk-website-proxy.svg)](https://hub.docker.com/r/niccokunzmann/freifunk-website-proxy/)
 
@@ -12,11 +13,10 @@ The intention is to
 Using the Server
 ----------------
 
-You create an http service in the local community network.
+You create an HTTP service in the local community network.
 Then, you go to this service installation for your community.
-- [Potsdam][ffp]
 
-You put in your ip address, your server name and your port.
+You put in your IP address, your server name and your port.
 When you submit, your website should be available under the hostname you entered.
 
 Setting up a Server
@@ -30,13 +30,15 @@ You can setup the server for your community in case the server is not there.
    ```
 2. Start the server replacing the configuration variables accordingly.
    ```
-   docker run -p "80:80" -e "DOMAIN=MY-DOMAIN" -d --rm niccokunzmann/freifunk-website-proxy
+   docker run -p "80:80" -e "DOMAIN=MY-DOMAIN" -d --rm niccokunzmann/dynamic-website-reverse-proxy
    ```
    Now, the server should be available at http://localhost.
 3. Once the server is available, you need to configure the router of yours to forward the traffic.
-   I.e. this could be your internet gateway available at http://192.168.0.1.
+   I.e. this could be your internet gateway available at [http://192.168.0.1](http://192.168.0.1).
    Somewhere you can find the "Port Forwarding" (DE: Portfreigabe/Portweiterleitung)
-   Here, you can configure the gateway to forward traffic from port 80 to your IP on port 80.
+   Here, you can configure the gateway to forward traffic
+   - from port 80 to your IP on port 80 (HTTP)
+   - from port 80 to your IP on port 443 (HTTPS)
 4. Setup a domain name.
    In case you have just a home router, you can use e.g. http://selfhost.eu to get a free of charge dynamic domain name.
 5. In order for other people to reach not only your domain name but also other services on this domain,
@@ -48,7 +50,7 @@ You can setup the server for your community in case the server is not there.
    - You can also contact @niccokunzmann in an issue if you like to use a domain named `my-community.quelltext.eu`.
    - Your community has a website e.g. `freifunk-potsdam.de`.
      They can setup `service.freifunk-potsdam.de` and `*.service.freifunk-potsdam.de` to point to your domain.
-6. Configure your gateway to update the IP address behind the domain name.
+6. Configure your gateway (the router at your home) to update the IP address behind the domain name.
    Your gateway usually has a dyndns configuration which you can configure.
    This will update the registered dynamic domain name once your provider switches your IP address.
 
@@ -78,7 +80,10 @@ This is configuration you can touch:
 - `SOURCE_CODE`  
   This is the directory the currently running source code can be obtained from.
   - default for the Python app is the module directory.
-  - default for the docker container is `/app`-
+  - default for the docker container is `/app`
+- `NGINX_CONF`
+  This is the path to the file with the replaced nginx configuration in it.
+  - default is `/tmp/nginx.conf`.
 
 Development
 -----------
@@ -90,7 +95,7 @@ Run the server
 
 Build the server and run it 
 
-    docker build --tag niccokunzmann/freifunk-website-proxy . && docker run -p "9000:80" -e "DOMAIN=localhost:9000" -it --rm niccokunzmann/freifunk-website-proxy
+    docker build --tag niccokunzmann/dynamic-website-reverse-proxy . && docker run -p "9000:80" -e "DOMAIN=localhost:9000" -it --rm niccokunzmann/dynamic-website-reverse-proxy
 
 Now, you can reach your server under http://localhost:9000.
 
@@ -103,4 +108,3 @@ Further Reading
 
 - [Diskussion im FreiFunk-Forum](https://forum.freifunk.net/t/lokale-webdienste-freigeben/18625)
 
-[ffp]: http://ffp.quelltext.eu

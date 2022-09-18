@@ -40,7 +40,7 @@ def website(server_address, sub_domain, proxy):
 @fixture
 def db(tmpdir):
     from freifunk_website_proxy.database import Database
-    file = str(tmpdir.mkdir("sub").join("hello.txt"))
+    file = str(tmpdir.mkdir("sub").join("db.txt"))
     return Database(file)
 
 

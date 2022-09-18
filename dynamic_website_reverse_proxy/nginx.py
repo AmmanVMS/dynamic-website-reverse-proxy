@@ -4,20 +4,21 @@ This module controls the nginx server.
 
 import subprocess
 import tempfile
+import os
 
-FILE_NAME = "/tmp/nginx.conf"
+NGINX_CONF = os.environ.get("NGINX_CONF", "/tmp/nginx.conf")
 current_process = None
 
 def configure_nginx(configuration):
     """Restart nginx with a certain configuration."""
     global current_process
-    with open(FILE_NAME, "w") as f:
+    with open(NGINX_CONF, "w") as f:
         f.write(configuration)
-    subprocess.run(["nginx", "-t", "-c", FILE_NAME], check=True)
+    subprocess.run(["nginx", "-t", "-c", NGINX_CONF], check=True)
     if current_process:
         subprocess.run(["nginx", "-s", "reload"], check=True)
     else:
-        current_process = subprocess.Popen(["nginx", "-c", FILE_NAME])
+        current_process = subprocess.Popen(["nginx", "-c", NGINX_CONF])
     print(configuration)
 
 

@@ -1,7 +1,7 @@
 FROM alpine
 
 # Install Python 3
-RUN apk add --no-cache python3 && rm -rf /var/cache/apk/*
+RUN apk add --no-cache python3 py3-pip && rm -rf /var/cache/apk/*
 
 # make some useful symlinks that are expected to exist
 RUN if [[ ! -e /usr/bin/python ]];        then ln -sf /usr/bin/python3 /usr/bin/python; fi
@@ -9,8 +9,8 @@ RUN if [[ ! -e /usr/bin/python-config ]]; then ln -sf /usr/bin/python3-config /u
 RUN if [[ ! -e /usr/bin/pydoc ]];         then ln -sf /usr/bin/pydoc3 /usr/bin/pydoc; fi
 RUN if [[ ! -e /usr/bin/easy_install ]];  then ln -sf $(ls /usr/bin/easy_install*) /usr/bin/easy_install; fi
     
+#RUN easy_install pip && pip install --upgrade --no-cache-dir pip
 # Install and upgrade Pip
-RUN easy_install pip && pip install --upgrade --no-cache-dir pip
 RUN if [[ ! -e /usr/bin/pip ]]; then ln -sf /usr/bin/pip3 /usr/bin/pip; fi
 
 # Install nginx
@@ -36,14 +36,13 @@ RUN pip install --upgrade --no-cache-dir -r requirements.txt
 
 # Start service
 ENTRYPOINT ["/bin/sh", "start-service.sh"]
-ADD start-service.sh .
 
 # add source files
 ENV SOURCE_CODE="/app"
 ADD LICENSE .
 ADD Dockerfile.license .
 ADD Dockerfile .
+ADD start-service.sh .
 
 # Add the app
-ADD freifunk_website_proxy freifunk_website_proxy
-
+ADD dynamic_website_reverse_proxy dynamic_website_reverse_proxy
