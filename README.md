@@ -73,6 +73,13 @@ This is the configuration you should touch:
   I.e. Freifunk in Potsdam covers `10.22.0.0/16`.
 - `MAXIMUM_HOST_NAME_LENGTH` default `50`  
   This is the maximum length of a host name.
+- `DEFAULT_SERVER` default `localhost:$PORT`  
+  The website served for each hostname that is not registered.
+  By default, this will be the overview page of the web app.
+- `PORT` default `9001`  
+  This is the port on which the app listens for connections.
+- `NGINX_PORT` default `80`  
+  This is the port on which nginx listens for connections.
 
 This is configuration you can touch:
 - `DATABASE`  

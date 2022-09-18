@@ -4,8 +4,8 @@ This module is the interface to the http proxy.
 """
 import os
 
-APP_PORT = 9001
-NGINX_PORT = 80
+APP_PORT = int(os.environ.get(("PORT", 9001))
+NGINX_PORT = int(os.environ.get(("NGINX_PORT", 80))
 
 NGINX_CONFIGURATION = """
 #

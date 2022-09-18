@@ -1,6 +1,6 @@
 import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
-from .proxy import Proxy
+from .proxy import Proxy, APP_PORT
 from .nginx import configure_nginx, nginx_is_available
 from .database import Database, NullDatabase
 import ipaddress
@@ -30,6 +30,8 @@ else:
 proxy = database.load_safely()
 if proxy is None:
     proxy = Proxy(DOMAIN)
+
+
 
 def update_nginx():
     """Restart nginx with a new configuration."""
@@ -87,7 +89,7 @@ def get_source():
 def main():
     """Run the server app."""
     update_nginx()
-    run(port=9001, debug=True, host="")
+    run(port=APP_PORT, debug=True, host="")
 
 __all__ = ["main"]
 
