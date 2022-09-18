@@ -3,7 +3,7 @@
 # From https://github.com/marketplace/actions/build-and-push-docker-images
 #
 
-name: build-image
+name: build-docker-image
 
 on:
   schedule:
