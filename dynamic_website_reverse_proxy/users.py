@@ -3,6 +3,8 @@
 Users name other entities and can themselves be named.
 Since this is a relationship, we use double dispatch.
 """
+from .abilities import Abilities
+
 
 class UniqueUser:
     """A user on the system."""
@@ -28,6 +30,11 @@ class UniqueUser:
     def is_unique_user(self):
         """Whether this is a unique user."""
         return True
+
+    @property
+    def can(self):
+        """What I can do."""
+        return Abilities(self)
 
 SYSTEM = UniqueUser("system", "🔒system", "SYSTEM")
 ADMIN = UniqueUser("admin", "admin", "ADMIN")
@@ -61,6 +68,12 @@ class User:
     def is_unique_user(self):
         """Whether this is a unique user."""
         return False
+
+    @property
+    def can(self):
+        """What I can do."""
+        return Abilities(self)
+
 
 
 USER1 = User("Alice")

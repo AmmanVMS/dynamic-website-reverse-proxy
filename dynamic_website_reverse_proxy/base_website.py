@@ -38,6 +38,8 @@ class BaseWebsite(ABC):
         - config - an object with the attributes
             - http_port
             - domain
+
+        Until changed, the owner is the SYSTEM user.
         """
         self._source_url = source_url
         self._config = config
