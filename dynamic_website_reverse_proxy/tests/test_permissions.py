@@ -1,6 +1,7 @@
 """Test the permissions for the users."""
 import pytest
 from dynamic_website_reverse_proxy.users import SYSTEM, ANONYMOUS, USER1, ADMIN, USER2
+from dynamic_website_reverse_proxy.permissions import ALL_PERMISSIONS, Permissions, InvalidPermissionError 
 
 
 class ANamedSomeone:
@@ -45,4 +46,53 @@ def test_action_as_string(action, string):
     assert action.as_permission() == string
 
 
+class MockAction:
 
+    def __init__(self, string):
+        self.string = string
+
+    def as_permission(self):
+        return self.string
+
+P2 = "admin can edit website of system\nuser can see website of admin"
+
+@pytest.mark.parametrize("inside,permission,all_permissions", [
+    # one permission
+    (True, "user can see website of user", "user can see website of user"),
+    (False, "system can see website of other user", "user can see website of user"),
+    (False, "user can see website of other user", "user can see website of user"),
+    (False, "system can see website of other user", "user can see website of system"),
+    # multiple permissions
+    (True, "admin can edit website of system", P2),
+    (True, "user can see website of admin", P2),
+    (False, "user can see website of anonymous", P2),
+    (False, "system can edit website of other user", P2),
+])
+def test_can_load_permissions(inside, permission, all_permissions):
+    p = Permissions(all_permissions.split("\n"))
+    allowed = p.allow(MockAction(permission))
+    assert allowed == inside, f"{permission} in {all_permissions} == {inside}"
+
+
+invalid_permissions = pytest.mark.parametrize("invalid_permission", [
+    # user cannot be in the end because the unique users identify themselves differently
+    "admin can see website of user",
+    "anonymous can edit website of user",
+    "system can delete website of user",
+    # malformed permissions
+    "user",
+    "SYSTEM can see website of system",
+    " admin can see website of system",
+    "admin can see website of system ",
+])
+
+@invalid_permissions
+def test_load_invalid_permission(invalid_permission):
+    with pytest.raises(InvalidPermissionError):
+        Permissions(invalid_permission)
+
+
+@invalid_permissions
+def test_check_invalid_permission(invalid_permission):
+    with pytest.raises(InvalidPermissionError):
+        Permissions([]).allow(MockAction(invalid_permission))
