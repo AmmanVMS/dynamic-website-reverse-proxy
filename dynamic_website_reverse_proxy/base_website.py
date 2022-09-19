@@ -91,7 +91,7 @@ class BaseWebsite(ABC):
 
     def called_by(self, user):
         """What this user calls me."""
-        return f"website of {user.call(self._owner)}"
+        return f"website of {user.calls(self._owner)}"
 
     @property
     def owner(self):

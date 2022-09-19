@@ -71,8 +71,28 @@ class TestCreateWebsite:
         assert response["status"] == HTTPStatus.BAD_REQUEST, message
         assert response["error"]["message"] == message
 
+    no_permission = pytest.mark.parametrize("user,post,message", [
+        (ADMIN, REQUEST1, "admin cannot create website of admin"),
+        (USER1, REQUEST2, "user cannot create website of user"),
+    ])
 
-
+    @no_permission
+    def test_permission_denied(self, apiv1, user, message, post):
+        response = apiv1.create_website(user, post)
+        assert response["status"] == HTTPStatus.UNAUTHORIZED, message
+        assert response["error"]["message"] == message
+    
+    @no_permission
+    def test_action_tested(self, apiv1, user, message, post, permissions):
+        response = apiv1.create_website(user, post)
+        assert len(permissions.actions) > 0, "Someone should ask for permission!"
+        assert message.replace("cannot", "can") in permissions.actions
+    
+    @no_permission
+    def test_website_not_added(self, db, apiv1, user, post, message):
+        """The website is not added if no permission is given."""
+        apiv1.create_website(user, post)
+        db.add_website.assert_not_called()
 
 
 

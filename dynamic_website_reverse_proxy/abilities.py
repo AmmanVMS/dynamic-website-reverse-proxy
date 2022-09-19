@@ -13,6 +13,10 @@ class Action:
         """Return a string that can be read as a permission."""
         return f"{self._subject.calls(self._subject)} can {self._predicate} {self._subject.calls(self._object)}"
     
+    def as_denied_permission(self):
+        """Return a string that can be read as a denied permission."""
+        return f"{self._subject.calls(self._subject)} cannot {self._predicate} {self._subject.calls(self._object)}"
+    
 
 class Abilities:
     """The abilities a users have.

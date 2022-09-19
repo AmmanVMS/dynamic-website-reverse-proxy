@@ -76,7 +76,7 @@ class TestPermissions:
     def allow(self, action):
         self.actions.append(action.as_permission())
         self.calls_left -= 1
-        return self.calls_left == 0
+        return self.calls_left != 0
 
     def allow_all(self):
         """allow all calls"""

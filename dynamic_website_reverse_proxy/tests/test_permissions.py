@@ -23,7 +23,7 @@ class ANamedSomeone:
 class ANamer:
     """Someone who names a ANamesThing"""
 
-    def call(self, other):
+    def calls(self, other):
         return other.called_by(self)
 
 @pytest.mark.parametrize("who", [
