@@ -106,6 +106,8 @@ This is configuration you can touch:
 - `NGINX_CONF`
   This is the path to the file with the replaced nginx configuration in it.
   - default is `/tmp/nginx.conf`.
+- `PERMISSIONS` defaults to `./dynamic_website_reverse_proxy/permissions.txt`  
+  This is a list of actions for users on this system.
 
 Development
 -----------
