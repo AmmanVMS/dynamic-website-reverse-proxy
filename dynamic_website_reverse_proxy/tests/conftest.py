@@ -7,8 +7,8 @@ from dynamic_website_reverse_proxy.proxy import Proxy
 from dynamic_website_reverse_proxy.database import Database
 from unittest.mock import Mock
 from dynamic_website_reverse_proxy.api import APIv1
-
-
+from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, USER1, USER2
+import ipaddress
 
 HERE = os.path.dirname(__file__ or ".")
 sys.path.append(os.path.join(HERE, "..", ".."))
@@ -96,7 +96,7 @@ def permission_granted(permissions):
 def apiv1_config(permissions):
     config = {
         "maximum_host_name_length": 50,
-        "network": "10.0.0.0/24",
+        "network": ipaddress.ip_network("10.0.0.0/24"),
         "domain": "example.com"
     }
     return Config(permissions=permissions, **config)
@@ -106,3 +106,7 @@ def apiv1(db, apiv1_config):
     return APIv1(db, apiv1_config)
 
 
+@fixture(params=[USER1, ADMIN, SYSTEM, ANONYMOUS])
+def any_user(request):
+    """Any user that exists."""
+    return request.param

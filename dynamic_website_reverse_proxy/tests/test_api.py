@@ -55,3 +55,26 @@ class TestCreateWebsite:
         value = getattr(website, attribute)
         assert value == expected, f"website.{attribute}"
 
+    @pytest.mark.parametrize("post,message", [
+        ({}, "The field 'domain' is missing."),
+        ({"domain": ""}, "The field 'source' is missing."),
+        ({"domain": "", "source": "http://10.0.0.4"}, "The field 'domain' must be a valid domain name."),
+        ({"domain": " asd", "source": "http://10.0.0.4"}, "The field 'domain' must be a valid domain name."),
+        ({"domain": ".asd", "source": "http://10.0.0.4"}, "The field 'domain' must be a valid domain name."),
+        ({"domain": "test.example.com", "source": "http10.0.0.4"}, "The field 'source' must be a valid http/https url."),
+        ({"domain": "test.example.com", "source": "ftp://10.0.0.4"}, "The field 'source' must be a valid http/https url."),
+        ({"domain": "test.example.com", "source": "https://10.0.100.4"}, "The field 'source' must be inside 10.0.0.0/24."),
+    ])
+    def test_fields_missing(self, apiv1, any_user, post, message):
+        """Check error message of invalid fields."""
+        response = apiv1.create_website(any_user, post)
+        assert response["status"] == HTTPStatus.BAD_REQUEST, message
+        assert response["error"]["message"] == message
+
+
+
+
+
+
+
+        
