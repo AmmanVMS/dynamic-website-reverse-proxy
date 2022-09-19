@@ -85,10 +85,6 @@ class BaseWebsite(ABC):
             return self.sub_domain
         return self.domain
 
-    def can_be_edited(self):
-        """Whether the user can edit the website."""
-        return False
-
     def change_owner_to(self, new_owner):
         """Change the owner of the website."""
         self._owner = new_owner
@@ -97,3 +93,7 @@ class BaseWebsite(ABC):
         """What this user calls me."""
         return f"website of {user.call(self._owner)}"
 
+    @property
+    def owner(self):
+        """The owner of this website."""
+        return self._owner

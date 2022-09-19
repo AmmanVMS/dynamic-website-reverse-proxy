@@ -1,11 +1,14 @@
 import os
-from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
+from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request, Response
 from .nginx import configure_nginx, nginx_is_available
 import ipaddress
 from .config import CONFIG
 from .app_db import AppDB
 from .website import Website
 import urllib
+from .users import ANONYMOUS, ADMIN
+import json
+from .api import APIv1 as APIv1Cls
 
 # environment variables
 HERE = os.path.dirname(__file__ or ".")
@@ -22,6 +25,9 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 db = AppDB(CONFIG)
 # make sure the proxy uses the updated environment variables
 db.proxy.reload(CONFIG)
+
+APIv1 = APIv1Cls(db, CONFIG)
+
 
 def update_nginx():
     """Restart nginx with a new configuration."""
@@ -73,6 +79,34 @@ def add_server_redirect():
     db.save()
     update_nginx()
     redirect("/#" + website.id)
+
+def get_user_from_request():
+    """Return the user who makes the request happen."""
+    return ANONYMOUS
+
+def make_response_from_api(result):
+    """Return a bottle response from the API call."""
+    body = json.dumps(result, indent="  ")
+    headers = {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        'Access-Control-Allow-Origin': '*',
+        # see https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowHeaderFromPreflight
+        'Access-Control-Allow-Headers': request.headers.get("Access-Control-Request-Headers", ""),
+        'Content-Type': 'application/json',
+    }
+    return Response(result["status"], body, headers)
+
+
+@post("/api/v1/website/create")
+def change_website(action, domain):
+    return make_response_from_api(APIv1.create_website(get_user_from_request(), request.json()))
+
+
+@get("/api/v1/website/list")
+def list_websites():
+    return make_response_from_api(APIv1.list_websites(get_user_from_request()))
 
 
 @route("/source.zip")

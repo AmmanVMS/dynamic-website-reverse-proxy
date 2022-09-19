@@ -5,6 +5,8 @@ from .config import Config
 from dynamic_website_reverse_proxy.website import Website
 from dynamic_website_reverse_proxy.proxy import Proxy
 from dynamic_website_reverse_proxy.database import Database
+from unittest.mock import Mock
+from dynamic_website_reverse_proxy.api import APIv1
 
 
 
@@ -55,8 +57,52 @@ def website(source, sub_domain, config):
 
 
 @fixture
-def db(tmpdir):
+def persistent_db(tmpdir):
     file = str(tmpdir.mkdir("sub").join("db.txt"))
     return Database(file)
+
+
+@fixture
+def db():
+    """The database to operate the apiv1 on."""
+    return Mock()
+
+class TestPermissions:
+    """Saving state."""
+    def __init__(self):
+        self.calls_left = 1
+        self.actions = []
+
+    def allow(self, action):
+        self.actions.append(action.as_permission())
+        self.calls_left -= 1
+        return self.calls_left == 0
+
+    def allow_all(self):
+        """allow all calls"""
+        self.calls_left = 0
+
+@fixture
+def permissions():
+    """The permissions to grant."""
+    return TestPermissions()
+
+@fixture
+def permission_granted(permissions):
+    """Granting all permissions."""
+    permissions.allow_all()
+
+@fixture
+def apiv1_config(permissions):
+    config = {
+        "maximum_host_name_length": 50,
+        "network": "10.0.0.0/24",
+        "domain": "example.com"
+    }
+    return Config(permissions=permissions, **config)
+
+@fixture
+def apiv1(db, apiv1_config):
+    return APIv1(db, apiv1_config)
 
 

@@ -9,10 +9,10 @@ from .abilities import Abilities
 class UniqueUser:
     """A user on the system."""
 
-    def __init__(self, permission_name, display_name, persistent_id):
+    def __init__(self, permission_name, id_, persistent_id):
         """Create a unique user with this name"""
         self._permission_name = permission_name
-        self._display_name = display_name
+        self._id = id_
         self._persistent_id = persistent_id
 
     def __reduce__(self):
@@ -36,6 +36,14 @@ class UniqueUser:
         """What I can do."""
         return Abilities(self)
 
+    @property
+    def id(self):
+        """The username/id in the system."""
+        return self._id
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} {self._permission_name}>"
+
 SYSTEM = UniqueUser("system", "🔒system", "SYSTEM")
 ADMIN = UniqueUser("admin", "admin", "ADMIN")
 ANONYMOUS = UniqueUser("anonymous", "🔓anonymous", "ANONYMOUS")
@@ -49,8 +57,8 @@ class User:
         self._name = name
 
     @property
-    def name(self):
-        """The username."""
+    def id(self):
+        """The username/id in the system."""
         return self._name
 
     def calls(self, other):
@@ -61,7 +69,7 @@ class User:
         """How I would like the other to call me."""
         if other.is_unique_user():
             return "other user"
-        elif other.name == self.name:
+        elif other.id == self.id:
             return "user"
         return "other user"
 
