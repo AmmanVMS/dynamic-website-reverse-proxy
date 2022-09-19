@@ -1,13 +1,10 @@
 """Test the users.
 
 """
-from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, User
+from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, USER1, USER2
 import pickle
 import pytest
 
-
-USER1 = User("Alice")
-USER2 = User("Bob")
 
 @pytest.mark.parametrize("user1,user2,name", [
     (USER1, USER1,     "user"),

@@ -35,6 +35,7 @@ def test_equality(website, sub_domain, config, source):
     assert website == other_website
     assert hash(website) == hash(other_website)
 
+
 def test_inequality(website, config, source):
     """Test equality."""
     other_website = Website(source, "other-subdomain", config)

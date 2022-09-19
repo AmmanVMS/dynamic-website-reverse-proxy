@@ -1,4 +1,8 @@
-"""Base class for users."""
+"""Base class for users.
+
+Users name other entities and can themselves be named.
+Since this is a relationship, we use double dispatch.
+"""
 
 class UniqueUser:
     """A user on the system."""
@@ -59,6 +63,8 @@ class User:
         return False
 
 
+USER1 = User("Alice")
+USER2 = User("Bob")
 
 
 

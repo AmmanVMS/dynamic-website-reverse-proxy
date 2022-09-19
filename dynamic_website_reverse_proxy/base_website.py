@@ -1,6 +1,7 @@
 from abc import ABC, abstractproperty
 from .users import SYSTEM
 
+
 class BaseWebsite(ABC):
     """This is a website registered in the proxy."""
     
@@ -40,6 +41,7 @@ class BaseWebsite(ABC):
         """
         self._source_url = source_url
         self._config = config
+        self._owner = SYSTEM
 
     @abstractproperty
     def sub_domain(self):
@@ -85,7 +87,11 @@ class BaseWebsite(ABC):
         """Whether the user can edit the website."""
         return False
 
-    @property
-    def creator(self):
-        """The user who created this."""
-        return SYSTEM
+    def change_owner_to(self, new_owner):
+        """Change the owner of the website."""
+        self._owner = new_owner
+
+    def called_by(self, user):
+        """What this user calls me."""
+        return f"website of {user.call(self._owner)}"
+
