@@ -10,7 +10,7 @@ admin can see website of anonymous
 anonymous can see website of other user
 user can see website of other user
 user can see website of user
-admin can see website of user
+admin can see website of other user
 
 anonymous can see website of admin
 user can see website of admin
@@ -23,7 +23,7 @@ admin can see website of system
 ## edit
 # changing the website
 user can edit website of user
-admin can edit website of user
+admin can edit website of other user
 
 anonymous can edit website of anonymous
 user can edit website of anonymous
@@ -37,7 +37,7 @@ admin can create website of admin
 
 # delete
 user can delete website of user
-admin can delete website of user
+admin can delete website of other user
 
 anonymous can delete website of anonymous
 user can delete website of anonymous

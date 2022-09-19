@@ -61,6 +61,9 @@ def D(source_url):
     ("websites", D("http://localhost:4000"), {"PORT": "4000"}),
     ("websites", D("http://test.example.com"), {"DEFAULT_SERVER": "test.example.com"}),
     ("websites", D("https://test.example.com"), {"DEFAULT_SERVER": "https://test.example.com"}),
+
+    ("permissions_file", os.path.join(HERE_PARENT, "permissions.txt"), {}),
+    ("permissions_file", "/data/permission1.txt", {"PERMISSIONS": "/data/permission1.txt"}),
 ])
 def test_parsing(attr, expected, env):
     """Test the parsing of the configuration."""
@@ -123,3 +126,6 @@ def test_websites(DEFAULT_DOMAINS, websites):
     assert len(config.websites) == len(websites) + 1
     for website in websites:
         assert website in config.websites
+
+
+

@@ -5,7 +5,7 @@ import os
 import ipaddress
 from .default_website import DefaultWebsite
 from .full_website import FullWebsite
-
+from .permissions import Permissions
 
 
 class Config:
@@ -92,6 +92,23 @@ class Config:
             source = source.strip()
             websites.append(FullWebsite(source, domain, self))
         return websites
+
+    @property
+    def permissions_file(self):
+        """The file where the permissions are stored."""
+        return self._env.get("PERMISSIONS", os.path.join(self.here, "permissions.txt"))
+        
+    @property
+    def permissions(self):
+        """The permissions of this system."""
+        permissions = []
+        with open(self.permissions_file) as f:
+            for line in f:
+                permission = line[:line.find("#")].strip()
+                if not permission:
+                    continue
+                permissions.append(permission)
+        return Permissions(permissions)
 
 
 class EnvConfig(Config):

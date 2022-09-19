@@ -1,7 +1,8 @@
 """Test the permissions for the users."""
 import pytest
 from dynamic_website_reverse_proxy.users import SYSTEM, ANONYMOUS, USER1, ADMIN, USER2
-from dynamic_website_reverse_proxy.permissions import ALL_PERMISSIONS, Permissions, InvalidPermissionError 
+from dynamic_website_reverse_proxy.permissions import ALL_PERMISSIONS, Permissions, InvalidPermissionError
+from dynamic_website_reverse_proxy.config import Config
 
 
 class ANamedSomeone:
@@ -96,3 +97,9 @@ def test_load_invalid_permission(invalid_permission):
 def test_check_invalid_permission(invalid_permission):
     with pytest.raises(InvalidPermissionError):
         Permissions([]).allow(MockAction(invalid_permission))
+
+
+def test_that_default_permissions_are_loaded():
+    config = Config({})
+    assert config.permissions.allow(MockAction("user can see website of user"))
+    assert not config.permissions.allow(MockAction("user can edit website of system"))

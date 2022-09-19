@@ -13,13 +13,14 @@ class Permissions:
     def validate_and_raise(self, permission):
         """Validate a permission and raise an error if it is invalid."""
         if permission not in ALL_PERMISSIONS:
-            raise InvalidPermissionError(f"'{permission}' mus be one of these: \n" + "\n".join(ALL_PERMISSIONS))
+            raise InvalidPermissionError(f"'{permission}' must be one of these: \n" + "\n".join(ALL_PERMISSIONS))
 
     def allow(self, action):
         """Whether an action is allowed."""
         permission = action.as_permission()
         self.validate_and_raise(permission)
         return permission in self._permissions
+
 
 ALL_PERMISSIONS = [
     f"{user} can {action} {obj} of {owner}"
