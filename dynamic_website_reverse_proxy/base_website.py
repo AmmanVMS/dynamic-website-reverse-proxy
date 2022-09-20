@@ -3,7 +3,11 @@ from .users import SYSTEM
 
 
 class BaseWebsite(ABC):
-    """This is a website registered in the proxy."""
+    """This is a website registered in the proxy.
+
+    configuration_template - the template for nginx
+    name_a_user_calls_me - the name in the permissions
+    """
     
     configuration_template = """
     server {{
@@ -30,6 +34,7 @@ class BaseWebsite(ABC):
         }}
     }}
     """
+    name_a_user_calls_me = "website"
 
     def __init__(self, source_url, config):
         """Create a new website.
@@ -91,7 +96,7 @@ class BaseWebsite(ABC):
 
     def called_by(self, user):
         """What this user calls me."""
-        return f"website of {user.calls(self._owner)}"
+        return f"{self.name_a_user_calls_me} owned by {user.calls(self._owner)}"
 
     @property
     def owner(self):

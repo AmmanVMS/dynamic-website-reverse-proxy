@@ -35,6 +35,8 @@ class DefaultWebsite(Website):
     }}
     """
 
+    name_a_user_calls_me = "default website"
+
     def __init__(self, source_url, config):
         """Create a default website to serve when the domain is not used."""
         super().__init__(source_url, None, config)

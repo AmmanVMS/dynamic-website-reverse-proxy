@@ -9,7 +9,7 @@ from .config import Config
 
 
 REQUEST1 = {"domain": "test.example.com", "source": "http://10.0.0.2"}
-REQUEST2 = {"domain": "21.example.com", "source": "http://10.0.0.4"}
+REQUEST2 = {"domain": "meine-webseite.quelltext.eu", "source": "http://10.0.0.4"}
 
 def response_created(user, post):
     """The website was created."""
@@ -72,8 +72,8 @@ class TestCreateWebsite:
         assert response["error"]["message"] == message
 
     no_permission = pytest.mark.parametrize("user,post,message", [
-        (ADMIN, REQUEST1, "admin cannot create website of admin"),
-        (USER1, REQUEST2, "user cannot create website of user"),
+        (ADMIN, REQUEST1, "admin cannot create subdomain owned by admin"),
+        (USER1, REQUEST2, "user cannot create fqdn owned by user"),
     ])
 
     @no_permission
@@ -86,7 +86,8 @@ class TestCreateWebsite:
     def test_action_tested(self, apiv1, user, message, post, permissions):
         response = apiv1.create_website(user, post)
         assert len(permissions.actions) > 0, "Someone should ask for permission!"
-        assert message.replace("cannot", "can") in permissions.actions
+        denied_message = message.replace("cannot", "can")
+        assert denied_message in permissions.actions
     
     @no_permission
     def test_website_not_added(self, db, apiv1, user, post, message):

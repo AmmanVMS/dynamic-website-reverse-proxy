@@ -1,45 +1,91 @@
 
-####### Websites #######
+####### subdomains #######
 ## see
 # who can see what
 
-anonymous can see website of anonymous
-user can see website of anonymous
-admin can see website of anonymous
+anonymous can see subdomain owned by anonymous
+user can see subdomain owned by anonymous
+admin can see subdomain owned by anonymous
 
-anonymous can see website of other user
-user can see website of other user
-user can see website of user
-admin can see website of other user
+anonymous can see subdomain owned by other user
+user can see subdomain owned by other user
+user can see subdomain owned by user
+admin can see subdomain owned by other user
 
-anonymous can see website of admin
-user can see website of admin
-admin can see website of admin
+anonymous can see subdomain owned by admin
+user can see subdomain owned by admin
+admin can see subdomain owned by admin
 
-anonymous can see website of system
-user can see website of system
-admin can see website of system
+anonymous can see subdomain owned by system
+user can see subdomain owned by system
+admin can see subdomain owned by system
 
 ## edit
-# changing the website
-user can edit website of user
-admin can edit website of other user
+user can edit subdomain owned by user
+admin can edit subdomain owned by other user
+admin can edit subdomain owned by admin
 
-anonymous can edit website of anonymous
-user can edit website of anonymous
-admin can edit website of anonymous
+anonymous can edit subdomain owned by anonymous
+user can edit subdomain owned by anonymous
+admin can edit subdomain owned by anonymous
 
 ## create
-# creation
-anonymous can create website of anonymous
-user can create website of user
-admin can create website of admin
+anonymous can create subdomain owned by anonymous
+user can create subdomain owned by user
+admin can create subdomain owned by admin
 
-# delete
-user can delete website of user
-admin can delete website of other user
+## delete
+user can delete subdomain owned by user
+admin can delete subdomain owned by other user
+admin can delete subdomain owned by admin
 
-anonymous can delete website of anonymous
-user can delete website of anonymous
-admin can delete website of anonymous
+anonymous can delete subdomain owned by anonymous
+user can delete subdomain owned by anonymous
+admin can delete subdomain owned by anonymous
 
+####### Fully Qualified Domain Names #######
+## see
+# who can see what
+
+anonymous can see fqdn owned by anonymous
+user can see fqdn owned by anonymous
+admin can see fqdn owned by anonymous
+
+anonymous can see fqdn owned by other user
+user can see fqdn owned by other user
+user can see fqdn owned by user
+admin can see fqdn owned by other user
+
+anonymous can see fqdn owned by admin
+user can see fqdn owned by admin
+admin can see fqdn owned by admin
+
+anonymous can see fqdn owned by system
+user can see fqdn owned by system
+admin can see fqdn owned by system
+
+## edit
+user can edit fqdn owned by user
+admin can edit fqdn owned by other user
+admin can edit fqdn owned by admin
+
+anonymous can edit fqdn owned by anonymous
+user can edit fqdn owned by anonymous
+admin can edit fqdn owned by anonymous
+
+## create
+#anonymous can create fqdn owned by anonymous
+#user can create fqdn owned by user
+admin can create fqdn owned by admin
+
+## delete
+user can delete fqdn owned by user
+admin can delete fqdn owned by other user
+admin can delete fqdn owned by admin
+
+anonymous can delete fqdn owned by anonymous
+user can delete fqdn owned by anonymous
+admin can delete fqdn owned by anonymous
+
+####### default website #######
+admin can see default website owned by system

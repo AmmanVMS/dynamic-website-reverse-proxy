@@ -23,10 +23,10 @@ class Permissions:
 
 
 ALL_PERMISSIONS = [
-    f"{user} can {action} {obj} of {owner}"
+    f"{user} can {action} {obj} owned by {owner}"
     for user in "user admin system anonymous".split()
     for action in "see edit create delete".split()
-    for obj in "website".split()
+    for obj in ("default website", "fqdn", "subdomain")
     for owner in ("user", "admin", "system", "anonymous", "other user")
     if not (user != "user" and owner == "user")
 ]

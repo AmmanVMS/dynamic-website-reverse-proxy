@@ -7,6 +7,8 @@ from .base_website import BaseWebsite
 class FullWebsite(BaseWebsite):
     """A website just for a full domain, not a subdomain."""
 
+    name_a_user_calls_me = "fqdn"
+
     def __init__(self, source, domain, config):
         """Create a new full domain serving website.
         

@@ -4,6 +4,8 @@ from .base_website import BaseWebsite
 class Website(BaseWebsite):
     """This is a website registered in the proxy as a sub domain."""
 
+    name_a_user_calls_me = "subdomain"
+
     def __init__(self, source_url, sub_domain, config):
         """Create a new website served under a subdomain.
 

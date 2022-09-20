@@ -33,7 +33,7 @@ class ANamer:
 ])
 def test_owned_website_has_a_name(who, website):
     website.change_owner_to(who)
-    assert website.called_by(ANamer()) == f"website of {who.name}"
+    assert website.called_by(ANamer()) == f"subdomain owned by {who.name}"
 
 
 @pytest.mark.parametrize("action,string", [
@@ -55,19 +55,19 @@ class MockAction:
     def as_permission(self):
         return self.string
 
-P2 = "admin can edit website of system\nuser can see website of admin"
+P2 = "admin can edit fqdn owned by system\nuser can see fqdn owned by admin"
 
 @pytest.mark.parametrize("inside,permission,all_permissions", [
     # one permission
-    (True, "user can see website of user", "user can see website of user"),
-    (False, "system can see website of other user", "user can see website of user"),
-    (False, "user can see website of other user", "user can see website of user"),
-    (False, "system can see website of other user", "user can see website of system"),
+    (True, "user can see fqdn owned by user", "user can see fqdn owned by user"),
+    (False, "system can see fqdn owned by other user", "user can see fqdn owned by user"),
+    (False, "user can see fqdn owned by other user", "user can see fqdn owned by user"),
+    (False, "system can see fqdn owned by other user", "user can see fqdn owned by system"),
     # multiple permissions
-    (True, "admin can edit website of system", P2),
-    (True, "user can see website of admin", P2),
-    (False, "user can see website of anonymous", P2),
-    (False, "system can edit website of other user", P2),
+    (True, "admin can edit fqdn owned by system", P2),
+    (True, "user can see fqdn owned by admin", P2),
+    (False, "user can see fqdn owned by anonymous", P2),
+    (False, "system can edit fqdn owned by other user", P2),
 ])
 def test_can_load_permissions(inside, permission, all_permissions):
     p = Permissions(all_permissions.split("\n"))
@@ -77,14 +77,14 @@ def test_can_load_permissions(inside, permission, all_permissions):
 
 invalid_permissions = pytest.mark.parametrize("invalid_permission", [
     # user cannot be in the end because the unique users identify themselves differently
-    "admin can see website of user",
-    "anonymous can edit website of user",
-    "system can delete website of user",
+    "admin can see fqdn owned by user",
+    "anonymous can edit fqdn owned by user",
+    "system can delete fqdn owned by user",
     # malformed permissions
     "user",
-    "SYSTEM can see website of system",
-    " admin can see website of system",
-    "admin can see website of system ",
+    "SYSTEM can see fqdn owned by system",
+    " admin can see fqdn owned by system",
+    "admin can see fqdn owned by system ",
 ])
 
 @invalid_permissions
@@ -101,5 +101,5 @@ def test_check_invalid_permission(invalid_permission):
 
 def test_that_default_permissions_are_loaded():
     config = Config({})
-    assert config.permissions.allow(MockAction("user can see website of user"))
-    assert not config.permissions.allow(MockAction("user can edit website of system"))
+    assert config.permissions.allow(MockAction("user can see fqdn owned by user"))
+    assert not config.permissions.allow(MockAction("user can edit fqdn owned by system"))

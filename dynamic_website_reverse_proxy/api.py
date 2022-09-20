@@ -2,6 +2,7 @@
 """
 from http import HTTPStatus
 from .full_website import FullWebsite
+from .website import Website
 import sys
 import re
 from urllib.parse import urlparse
@@ -77,7 +78,11 @@ class APIv1:
     def create_website(self, user, data):
         """Create a website as a user with certain data in it."""
         self.validate_website_data(data)
-        website = FullWebsite(data["source"], data["domain"], self._config)
+        domain = data["domain"]
+        if domain.endswith("." + self._config.domain):
+            website = Website(data["source"], domain[:-len(self._config.domain) - 1], self._config)
+        else:
+            website = FullWebsite(data["source"], domain, self._config)
         website.change_owner_to(user)
         self.check_if(user.can.create(website))
         self._db.add_website(website)
