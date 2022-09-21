@@ -8,6 +8,8 @@ import re
 from urllib.parse import urlparse
 import ipaddress
 from dynamic_website_reverse_proxy.users import ANONYMOUS, ADMIN, SYSTEM
+from io import StringIO
+import traceback
 
 
 VALID_DOMAIN = re.compile("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$")
@@ -21,11 +23,16 @@ def catch_and_respond(function):
             return function(*args, **kw)
         except:
             ty, err, tb = sys.exc_info()
+            file = StringIO()
+            traceback.print_exception(ty, err, tb, file=file)
+            tb_string = file.getvalue()
+            print(tb_string) # for tests
             return {
                 "status": getattr(err, "http_status", HTTPStatus.INTERNAL_SERVER_ERROR),
                 "error": {
                     "type": ty.__name__,
                     "message": str(err),
+                    "traceback": tb_string,
                 }
             }
     return wrapped
@@ -92,8 +99,9 @@ class APIv1:
             raise PermissionDenied(action)
 
     @catch_and_respond
-    def create_website(self, user, data):
-        """Create a website as a user with certain data in it."""
+    def create_website(self, credentials, data):
+        """Create a website as a user identified by the credentials with certain data in it."""
+        user = self.login(credentials)
         self.validate_website_data(data)
         domain = data["domain"]
         if domain.endswith("." + self._config.domain):

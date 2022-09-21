@@ -99,17 +99,12 @@ def apiv1_config(permissions):
     config = {
         "maximum_host_name_length": 50,
         "network": ipaddress.ip_network("10.0.0.0/24"),
-        "domain": "example.com"
+        "domain": "example.com",
+        "admin_password": "secure",
     }
     return Config(permissions=permissions, **config)
 
 @fixture
 def apiv1(db, apiv1_config):
-    apiv1_config.update(admin_password="")
     return APIv1(db, apiv1_config)
 
-
-@fixture(params=[USER1, ADMIN, SYSTEM, ANONYMOUS])
-def any_user(request):
-    """Any user that exists."""
-    return request.param
