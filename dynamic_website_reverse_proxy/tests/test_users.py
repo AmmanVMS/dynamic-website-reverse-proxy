@@ -1,7 +1,7 @@
 """Test the users.
 
 """
-from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, USER1, USER2
+from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, USER1, USER2, User
 import pickle
 import pytest
 
@@ -35,8 +35,30 @@ def test_user1_calls_user2_by_name(user1, user2, name):
     assert user1.calls(user2) == name
 
 
+def dump_and_load(obj):
+    return pickle.loads(pickle.dumps(obj))
+
+
 @pytest.mark.parametrize("user", [ADMIN, SYSTEM, ANONYMOUS])
 def test_persistence_is_identical_for_special_users(user):
-    assert pickle.loads(pickle.dumps(user)) is user
+    assert dump_and_load(user) is user
+
+
+@pytest.mark.parametrize("username", ("test", "Hello"))
+@pytest.mark.parametrize("password", ("test", " "))
+def test_user_can_remember_password(username, password):
+    user = User(username)
+    user.set_password(password)
+    user = dump_and_load(user)
+    assert user.is_password(password)
+
+
+@pytest.mark.parametrize("password", ("test", " "))
+@pytest.mark.parametrize("wrong_password", ("tet", "  ", "", "1234"))
+def test_user_rejects_wrong_password(password, wrong_password):
+    user = User("Alice")
+    user.set_password(password)
+    user = dump_and_load(user)
+    assert not user.is_password(wrong_password)
 
 

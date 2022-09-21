@@ -100,13 +100,13 @@ def make_response_from_api(result):
 
 
 @post("/api/v1/website/create")
-def change_website(action, domain):
-    return make_response_from_api(APIv1.create_website(get_user_from_request(), request.json()))
+def create_website(action, domain):
+    return make_response_from_api(APIv1.create_website(request.auth, request.json()))
 
 
 @get("/api/v1/website/list")
 def list_websites():
-    return make_response_from_api(APIv1.list_websites(get_user_from_request()))
+    return make_response_from_api(APIv1.list_websites(request.auth))
 
 
 @route("/source.zip")

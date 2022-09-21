@@ -4,6 +4,8 @@ Users name other entities and can themselves be named.
 Since this is a relationship, we use double dispatch.
 """
 from .abilities import Abilities
+import hashlib
+import os
 
 
 class UniqueUser:
@@ -52,9 +54,14 @@ ANONYMOUS = UniqueUser("anonymous", "🔓anonymous", "ANONYMOUS")
 class User:
     """A human user in the system. There can be many of that kind."""
 
+    DEFAULT_PASSWORD = ""
+
     def __init__(self, name):
         """Create a new user with this name."""
         self._name = name
+        self._salt = os.urandom(10)
+        self._algorithm = hashlib.sha1 # store in user in case of change
+        self.set_password(self.DEFAULT_PASSWORD)
 
     @property
     def id(self):
@@ -82,10 +89,27 @@ class User:
         """What I can do."""
         return Abilities(self)
 
+    def set_password(self, new_password):
+        """Set a new password for the user."""
+        self._password = self._algorithm(self._salt + new_password.encode("UTF-8")).digest()
+    
+    def is_password(self, password):
+        """Return whether the password is the correct password of this user."""
+        _password = self._algorithm(self._salt + password.encode("UTF-8")).digest()
+        return _password == self._password
 
 
 USER1 = User("Alice")
+USER1.test_password = "1234"
+USER1.set_password("1234")
+
 USER2 = User("Bob")
+USER2.test_password = "password"
+USER2.set_password("password")
+
+USER3 = User("Molly")
+USER3.test_password = "nanna"
+USER3.set_password("nanna")
 
 
 

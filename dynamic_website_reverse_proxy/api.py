@@ -7,9 +7,11 @@ import sys
 import re
 from urllib.parse import urlparse
 import ipaddress
+from dynamic_website_reverse_proxy.users import ANONYMOUS, ADMIN, SYSTEM
 
-VALID_DOMAIN = re.compile("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$")
-VALID_IPV4 = re.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$")
+
+VALID_DOMAIN = re.compile("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$")
+VALID_IPV4 = re.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$")
 
 
 def catch_and_respond(function):
@@ -40,12 +42,27 @@ class IncompleteRequestData(BadRequestError):
         self.field = field
         super().__init__(f"The field '{field}' is missing.")
 
+
 class PermissionDenied(PermissionError):
     """This request requires other permissions."""
     http_status = HTTPStatus.UNAUTHORIZED
     def __init__(self, action):
         self.action = action
         super().__init__(action.as_denied_permission())
+
+
+class InvalidUserName(ValueError):
+    """This user name can not be used."""
+    http_status = HTTPStatus.NOT_ACCEPTABLE
+
+    def __init__(self, username):
+        """Create a new error for a username."""
+        super().__init__(f"You can not use the name '{username}' on this system.")
+    
+
+class InvalidLogin(ValueError):
+    """Wrong username or password."""
+    http_status = HTTPStatus.UNAUTHORIZED
 
 
 class APIv1:
@@ -95,3 +112,19 @@ class APIv1:
                 "owner" : user.id
             }
         }
+
+    def login(self, credentials):
+        """Log in a user and see if they like to be returned."""
+        if credentials == None:
+            return ANONYMOUS
+        username, password = credentials
+        if username == SYSTEM.id:
+            raise InvalidUserName(username)
+        is_admin = password == self._config.admin_password and password != ""
+        if is_admin and username == ADMIN.id:
+            return ADMIN
+        for user in self._db.users:
+            if user.id == username:
+                if is_admin or user.is_password(password):
+                    return user
+        raise InvalidLogin()
