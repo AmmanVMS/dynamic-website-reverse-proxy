@@ -57,8 +57,8 @@ class TestCreateWebsite:
     def test_check_website(self, db, apiv1, user, post, attribute, expected, permission_granted):
         """Check the website that was created."""
         apiv1.create_website(user, post)
-        db.add_website.assert_called_once()
-        website = db.add_website.call_args.args[0]
+        db.proxy.add.assert_called_once()
+        website = db.proxy.add.call_args.args[0]
         value = getattr(website, attribute)
         assert value == expected, f"website.{attribute}"
 
@@ -101,7 +101,7 @@ class TestCreateWebsite:
     def test_website_not_added(self, db, apiv1, user, post, message):
         """The website is not added if no permission is given."""
         apiv1.create_website(user, post)
-        db.add_website.assert_not_called()
+        db.proxy.add.assert_not_called()
 
 
 class TestUserIdentification:

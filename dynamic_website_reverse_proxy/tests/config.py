@@ -1,6 +1,8 @@
 """An easily configurable class for configuration.
 
 """
+import pytest
+
 
 class Config:
     """Simple config class for the tests"""

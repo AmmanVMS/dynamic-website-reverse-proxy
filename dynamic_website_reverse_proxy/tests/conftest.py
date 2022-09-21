@@ -66,7 +66,7 @@ def persistent_db(tmpdir):
 def db():
     """The database to operate the apiv1 on."""
     db = Mock()
-    db.users = [USER1, USER2]
+    db.proxy.users = [USER1, USER2]
     return db
 
 class TestPermissions:

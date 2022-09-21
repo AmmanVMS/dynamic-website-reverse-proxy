@@ -2,7 +2,8 @@
 
 """
 from dynamic_website_reverse_proxy.website import Website
-
+from dynamic_website_reverse_proxy.users import ANONYMOUS, ADMIN, USER1, USER2, SYSTEM, UniqueUser
+import pytest
 
 
 def test_initial_proxy_has_no_entries(proxy):
@@ -81,3 +82,21 @@ def test_website_from_config_has_precedence(proxy, website, sub_domain, config):
     assert website2 in proxy.websites   
 
 
+class TestUsers:
+    """Tests for proxy.users"""
+
+    def test_proxy_has_no_users_at_start(self, proxy):
+        assert len(proxy.users) == 0
+
+    @pytest.mark.parametrize("user", [USER1, USER2])
+    def test_proxy_collects_users_from_websites(self, proxy, website, user):
+        proxy.add(website)
+        website.change_owner_to(user)
+        assert user in proxy.users
+        assert len(proxy.users) == 1
+
+    @pytest.mark.parametrize("user", [SYSTEM, ANONYMOUS, ADMIN, UniqueUser("unique test user", "unique test user", "unique test user")])
+    def test_proxy_does_not_collect_unique_users(self, proxy, website, user):
+        proxy.add(website)
+        website.change_owner_to(user)
+        assert len(proxy.users) == 0

@@ -131,7 +131,7 @@ class APIv1:
         is_admin = password == self._config.admin_password and password != ""
         if is_admin and username == ADMIN.id:
             return ADMIN
-        for user in self._db.users:
+        for user in self._db.proxy.users:
             if user.id == username:
                 if is_admin or user.is_password(password):
                     return user

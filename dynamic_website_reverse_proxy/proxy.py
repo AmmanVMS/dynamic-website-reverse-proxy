@@ -69,7 +69,12 @@ class Proxy:
     def reload(self, config):
         """Change the configuration of the proxy."""
         self._config = config
-            
+
+    @property
+    def users(self):
+        """A list of users with a website."""
+        return {website.owner for website in self.websites if not website.owner.is_unique_user()}
+
 
 __all__ = ["Proxy"]
 
