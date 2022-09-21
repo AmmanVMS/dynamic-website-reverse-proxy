@@ -12,7 +12,7 @@ class Permissions:
 
     def validate_and_raise(self, permission):
         """Validate a permission and raise an error if it is invalid."""
-        if permission not in ALL_PERMISSIONS:
+        if permission not in _ALL_PERMISSIONS_SET:
             raise InvalidPermissionError(f"'{permission}' must be one of these: \n" + "\n".join(ALL_PERMISSIONS))
 
     def allow(self, action):
@@ -30,6 +30,8 @@ ALL_PERMISSIONS = [
     for owner in ("user", "admin", "system", "anonymous", "other user")
     if not (user != "user" and owner == "user")
 ]
+
+_ALL_PERMISSIONS_SET = set(ALL_PERMISSIONS)
 
 
 class InvalidPermissionError(ValueError):
