@@ -54,14 +54,12 @@ ANONYMOUS = UniqueUser("anonymous", "🔓anonymous", "ANONYMOUS")
 class User:
     """A human user in the system. There can be many of that kind."""
 
-    DEFAULT_PASSWORD = ""
-
-    def __init__(self, name):
+    def __init__(self, name, password=""):
         """Create a new user with this name."""
         self._name = name
         self._salt = os.urandom(10)
         self._algorithm = hashlib.sha1 # store in user in case of change
-        self.set_password(self.DEFAULT_PASSWORD)
+        self.set_password(password)
 
     @property
     def id(self):
@@ -97,6 +95,17 @@ class User:
         """Return whether the password is the correct password of this user."""
         _password = self._algorithm(self._salt + password.encode("UTF-8")).digest()
         return _password == self._password
+
+    def __repr__(self):
+        """A debug representation."""
+        return f"<{self.__class__.__name__} '{self.id}'>"
+
+    def __eq__(self, other):
+        """Equality"""
+        return other.id == self.id
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 USER1 = User("Alice")

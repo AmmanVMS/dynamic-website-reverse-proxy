@@ -7,8 +7,10 @@ from dynamic_website_reverse_proxy.proxy import Proxy
 from dynamic_website_reverse_proxy.database import Database
 from unittest.mock import Mock
 from dynamic_website_reverse_proxy.api import APIv1
+from dynamic_website_reverse_proxy.app import App
 from dynamic_website_reverse_proxy.users import SYSTEM, ADMIN, ANONYMOUS, USER1, USER2
 import ipaddress
+import json
 
 HERE = os.path.dirname(__file__ or ".")
 sys.path.append(os.path.join(HERE, "..", ".."))
@@ -93,6 +95,7 @@ def permissions():
 def permission_granted(permissions):
     """Granting all permissions."""
     permissions.allow_all()
+    return True
 
 @fixture
 def apiv1_config(permissions):
@@ -101,10 +104,37 @@ def apiv1_config(permissions):
         "network": ipaddress.ip_network("10.0.0.0/24"),
         "domain": "example.com",
         "admin_password": "secure",
+        "websites": [],
     }
     return Config(permissions=permissions, **config)
 
+
+class APIv1App:
+    """Create an app around the API and see if it works."""
+    def __init__(self, db, config):
+        config.database = db
+        self._app = App(config)
+        self._app.request = self.request = Mock()
+        self._app._apiv1._db.proxy.add = db.proxy.add
+
+    def create_website(self, credentials, data):
+        self.request.auth = credentials
+        self.request.json.return_value = data
+        response = self._app.create_website()
+        response_data = json.loads(response.body)
+        assert response_data["status"] == response.status_code
+        return response_data
+
 @fixture
-def apiv1(db, apiv1_config):
+def apiv1_app(db, apiv1_config):
+    return APIv1App(db, apiv1_config)
+
+@fixture
+def apiv1_obj(db, apiv1_config):
+    """The apiv1 object"""
     return APIv1(db, apiv1_config)
+
+@fixture(params=[0, 1])
+def apiv1(apiv1_obj, apiv1_app, request):
+    return (apiv1_obj, apiv1_app)[request.param]
 

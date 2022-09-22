@@ -82,6 +82,20 @@ def test_website_from_config_has_precedence(proxy, website, sub_domain, config):
     assert website2 in proxy.websites   
 
 
+def test_proxy_with_no_websites_cannot_get_a_website(proxy, website):
+    assert proxy.get(website.id) == None
+
+
+def test_proxy_get_non_existent_website(proxy, website):
+    proxy.add(website)
+    assert proxy.get(website.id + "asd") == None
+
+
+def test_proxy_get_existent_website(proxy, website):
+    proxy.add(website)
+    assert proxy.get(website.id) == website
+
+
 class TestUsers:
     """Tests for proxy.users"""
 

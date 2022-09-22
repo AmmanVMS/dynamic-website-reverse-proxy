@@ -75,6 +75,10 @@ class Proxy:
         """A list of users with a website."""
         return {website.owner for website in self.websites if not website.owner.is_unique_user()}
 
+    def get(self, website_id):
+        """Get a website from its id."""
+        return self._websites.get(website_id)
+
 
 __all__ = ["Proxy"]
 

@@ -17,13 +17,18 @@ class Config:
 
     @property
     def here(self):
-        """The location of the app"""
+        """The location of the app."""
         return os.path.dirname(__file__ or ".")
 
     @property
     def static_files(self):
-        """The location of the app static files to serve"""
+        """The location of the app static files to serve."""
         return os.path.join(self.here, "static")
+
+    @property
+    def nginx_conf(self):
+        """The location of the configuration file for nginx."""
+        return self._env.get("NGINX_CONF", "/tmp/nginx.conf")
 
     @property
     def domain(self):

@@ -103,9 +103,11 @@ This is configuration you can touch:
   This is the directory the currently running source code can be obtained from.
   - default for the Python app is the module directory.
   - default for the docker container is `/app`
-- `NGINX_CONF`
-  This is the path to the file with the replaced nginx configuration in it.
+- ` NGINX_CONF`
+  This is the path to the file with the replaced `nginx` configuration in it.
   - default is `/tmp/nginx.conf`.
+  - if set to `none`, `nginx` will not be configured.
+  `nginx` will only be configured if installed on the system.`
 - `PERMISSIONS` defaults to `./dynamic_website_reverse_proxy/permissions.txt`  
   This is a list of actions for users on this system.
 

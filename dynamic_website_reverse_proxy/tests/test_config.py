@@ -64,6 +64,9 @@ def D(source_url):
 
     ("permissions_file", os.path.join(HERE_PARENT, "permissions.txt"), {}),
     ("permissions_file", "/data/permission1.txt", {"PERMISSIONS": "/data/permission1.txt"}),
+
+    ("nginx_conf", "/tmp/nginx.conf", {}),
+    ("nginx_conf", "/tets/teststs", {"NGINX_CONF": "/tets/teststs"}),
 ])
 def test_parsing(attr, expected, env):
     """Test the parsing of the configuration."""

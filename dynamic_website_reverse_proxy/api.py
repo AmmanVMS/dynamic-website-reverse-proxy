@@ -7,7 +7,7 @@ import sys
 import re
 from urllib.parse import urlparse
 import ipaddress
-from dynamic_website_reverse_proxy.users import ANONYMOUS, ADMIN, SYSTEM
+from dynamic_website_reverse_proxy.users import ANONYMOUS, ADMIN, SYSTEM, User
 from io import StringIO
 import traceback
 
@@ -110,7 +110,7 @@ class APIv1:
             website = FullWebsite(data["source"], domain, self._config)
         website.change_owner_to(user)
         self.check_if(user.can.create(website))
-        self._db.add_website(website)
+        self._db.proxy.add(website)
         return {
             "status": HTTPStatus.CREATED,
             "data": {
@@ -126,13 +126,16 @@ class APIv1:
         if credentials == None:
             return ANONYMOUS
         username, password = credentials
-        if username == SYSTEM.id:
+        if username == SYSTEM.id or not username.isalnum():
             raise InvalidUserName(username)
         is_admin = password == self._config.admin_password and password != ""
-        if is_admin and username == ADMIN.id:
+        if username == ADMIN.id:
+            if not is_admin:
+                raise InvalidUserName(username)
             return ADMIN
         for user in self._db.proxy.users:
             if user.id == username:
                 if is_admin or user.is_password(password):
                     return user
-        raise InvalidLogin()
+                raise InvalidLogin()
+        return User(username, password)
