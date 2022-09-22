@@ -115,7 +115,7 @@ class APIv1App:
         config.database = db
         self._app = App(config)
         self._app.request = self.request = Mock()
-        self._app._apiv1._db.proxy.add = db.proxy.add
+        self._app._db.proxy.add = db.proxy.add
 
     def create_website(self, credentials, data):
         self.request.auth = credentials

@@ -1,5 +1,5 @@
 import os
-from bottle import static_file, redirect, request, SimpleTemplate, Response, default_app
+from bottle import static_file, redirect, request, SimpleTemplate, Response, default_app, run
 from .nginx import Nginx
 import ipaddress
 from .config import CONFIG
@@ -26,10 +26,10 @@ class App:
     def reload(self, config):
         """Load the configuration again."""
         # The database to store the proxy in.
-        db = AppDB(config)
+        self._db = AppDB(config)
         # make sure the proxy uses the updated environment variables
-        db.proxy.reload(config)
-        self._apiv1 = APIv1(db, config)
+        self._db.proxy.reload(config)
+        self._apiv1 = APIv1(self._db, config)
         self._nginx = Nginx(config)
 
     def update_nginx(self):
@@ -85,11 +85,12 @@ class MainApp(App):
         print(self._db.proxy.get_nginx_configuration())
 
 
-def main(app=default_app()):
+def main():
     """Run the server app."""
     api = MainApp(CONFIG)
-    api.serve_from(app)
-    app().run(port=CONFIG.app_port, debug=CONFIG.debug, host="")
+    api.serve_from(default_app())
+    api.update_nginx()
+    run(port=CONFIG.app_port, debug=CONFIG.debug, host="")
 
 __all__ = ["main"]
 
