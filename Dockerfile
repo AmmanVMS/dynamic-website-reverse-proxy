@@ -1,7 +1,7 @@
 FROM alpine
 
 # Install Python 3
-RUN apk add --no-cache python3 py3-pip && rm -rf /var/cache/apk/*
+RUN apk add --no-cache python3 py3-pip augeas-libs && rm -rf /var/cache/apk/*
 
 # make some useful symlinks that are expected to exist
 RUN if [[ ! -e /usr/bin/python ]];        then ln -sf /usr/bin/python3 /usr/bin/python; fi
