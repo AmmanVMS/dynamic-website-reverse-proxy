@@ -43,3 +43,16 @@ def test_inequality(website, config, source):
     assert hash(website) != hash(other_website)
 
 
+class TestJSON:
+    """Test JSON attributes."""
+
+    def test_domain(self, owned_website, domain, sub_domain):
+        assert owned_website.to_json()["domain"] == f"{sub_domain}.{domain}"
+
+    def test_source(self, owned_website, source):
+        assert owned_website.to_json()["source"] == source
+
+    def test_owner(self, owned_website, website_owner):
+        assert owned_website.to_json()["owner"] == website_owner.id
+
+

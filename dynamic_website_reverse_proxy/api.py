@@ -139,3 +139,13 @@ class APIv1:
                     return user
                 raise InvalidLogin()
         return User(username, password)
+
+    @catch_and_respond
+    def list_websites(self, credentials):
+        """List all the websites that a user can see."""
+        user = self.login(credentials)
+        return {
+            "status": HTTPStatus.OK,
+            "data": [website.to_json() for website in self._db.proxy.websites if self._config.permissions.allow(user.can.see(website))]
+        }
+        

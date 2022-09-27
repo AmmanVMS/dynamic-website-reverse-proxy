@@ -69,6 +69,7 @@ def db():
     """The database to operate the apiv1 on."""
     db = Mock()
     db.proxy.users = [USER1, USER2]
+    db.proxy.websites = []
     return db
 
 class TestPermissions:
@@ -98,19 +99,20 @@ def permission_granted(permissions):
     return True
 
 @fixture
-def apiv1_config(permissions):
+def apiv1_config(permissions, db):
     config = {
         "maximum_host_name_length": 50,
         "network": ipaddress.ip_network("10.0.0.0/24"),
         "domain": "example.com",
         "admin_password": "secure",
-        "websites": [],
+        "websites": db.proxy.websites,
     }
     return Config(permissions=permissions, **config)
 
 
-class APIv1App:
+class APIv1TestApp:
     """Create an app around the API and see if it works."""
+
     def __init__(self, db, config):
         config.database = db
         self._app = App(config)
@@ -125,9 +127,16 @@ class APIv1App:
         assert response_data["status"] == response.status_code
         return response_data
 
+    def list_websites(self, credentials):
+        self.request.auth = credentials
+        response = self._app.list_websites()
+        response_data = json.loads(response.body)
+        assert response_data["status"] == response.status_code
+        return response_data
+
 @fixture
 def apiv1_app(db, apiv1_config):
-    return APIv1App(db, apiv1_config)
+    return APIv1TestApp(db, apiv1_config)
 
 @fixture
 def apiv1_obj(db, apiv1_config):
@@ -138,3 +147,19 @@ def apiv1_obj(db, apiv1_config):
 def apiv1(apiv1_obj, apiv1_app, request):
     return (apiv1_obj, apiv1_app)[request.param]
 
+@fixture
+def added_website(website, db):
+    """A website added to the proxy."""
+    db.proxy.websites.append(website)
+    return website
+
+@fixture(params=[SYSTEM, ADMIN, ANONYMOUS, USER1])
+def website_owner(request):
+    """The owner of owned_website."""
+    return request.param
+
+@fixture
+def owned_website(website, website_owner):
+    """Modify website to be owned by website_owner"""
+    website.change_owner_to(website_owner)
+    return website

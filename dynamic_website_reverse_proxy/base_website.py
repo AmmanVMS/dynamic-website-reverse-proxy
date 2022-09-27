@@ -102,3 +102,11 @@ class BaseWebsite(ABC):
     def owner(self):
         """The owner of this website."""
         return self._owner
+
+    def to_json(self):
+        """An unpersonalized JSON represenation of the website."""
+        return {
+            "owner": self.owner.id,
+            "domain": self.domain,
+            "source": self.source_url,
+        }
