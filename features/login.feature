@@ -1,10 +1,6 @@
 Feature: Log in on the main page
     In order for users to create websites, we want them to log in.
 
-    Scenario: You are not logged in by default.
-        Given we are on the index page
-         Then we see a login notice "You are not logged in."
-
     Scenario: There are inputs to log in.
         Given we are on the index page
          Then we see a text input for the username
@@ -30,4 +26,16 @@ Feature: Log in on the main page
           And we type "wrong password" into the input for the password
           And we click "Log In"
          Then we see a login notice "Invalid password. You are not logged in."
+
+    Scenario: Check the user log in is possible.
+        Given we are logged in as user
+         Then we see a login notice "You are logged in as user."
         
+    Scenario: Check the admin log in is possible.
+        Given we are logged in as admin
+         Then we see a login notice "You are logged in as admin."
+
+    Scenario: You are not logged in by default.
+        Given we are on the index page
+         Then we see a login notice "You are not logged in."
+

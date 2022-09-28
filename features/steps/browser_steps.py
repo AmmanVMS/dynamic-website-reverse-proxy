@@ -6,7 +6,8 @@ from selenium.webdriver.common.by import By
 #
 
 @given('we are on the index page')
-def step_impl(context):
+def visit_index_page(context):
+    context.browser.delete_all_cookies()
     context.browser.get(context.index_page)
     context.domain = None
 
@@ -33,12 +34,12 @@ def step_impl(context, type, tag, name):
 #
 
 @then('we click "{text}"')
-def step_impl(context, text):
+def click(context, text):
     element = context.browser.find_element(By.XPATH, f"//*[(self::a and text()='{text}') or (self::input and @value='{text}')]")
     element.click()
 
 @then('we type "{text}" into the {tag} for the {name}')
-def step_impl(context, text, tag, name):
+def type_in(context, text, tag, name):
     element = context.browser.find_element(By.XPATH, f"//{tag}[@name='{name}']")
     element.send_keys(text)
 
@@ -63,9 +64,21 @@ def step_impl(context, attribute, value):
 #
 
 @then('we see a {id} notice "{notice}"')
-def step_impl(context, id, notice):
+def notice_says(context, id, notice):
     element = context.browser.find_element(By.XPATH, f"//*[@id='{id}-notice']")
     assert element.text == notice, f"I expect element .{id}-notice to have the text '{notice}' but its text is '{element.text}'"
 
 
+USERS = {
+    "user": "password",
+    "user2": "other-password",
+    "admin": "12345" # environment.py
+}
 
+@Given("we are logged in as {username}")
+def step_impl(context, username):
+    visit_index_page(context)
+    type_in(context, username, "input", "username")
+    type_in(context, USERS[username], "input", "password")
+    click(context, "Log In")
+    notice_says(context, "login", f"You are logged in as {username}.")
