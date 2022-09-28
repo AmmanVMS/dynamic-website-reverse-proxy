@@ -145,10 +145,10 @@ class APIv1:
                 raise InvalidLogin()
         return User(username, password)
 
-    def get_login_response(self, username, password):
+    def get_login_response(self, credentials):
         """Try to log in a user and return an error message if it does not work."""
         try:
-            user = self.login((username, password))
+            user = self.login(credentials)
         except InvalidUserName as e:
             return False, str(e)
         except InvalidLogin as e:

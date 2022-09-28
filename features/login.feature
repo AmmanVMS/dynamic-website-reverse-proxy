@@ -10,21 +10,21 @@ Feature: Log in on the main page
         Given we are on the index page
          Then we type "admin" into the input for the username
           And we type "12345" into the input for the password
-          And we click "Log In"
+         When we click "Log In"
          Then we see a login notice "You are logged in as admin."
         
     Scenario: Anyone can log in if they do not have a website.
         Given we are on the index page
          Then we type "firsttimer" into the input for the username
           And we type "password" into the input for the password
-          And we click "Log In"
+          When we click "Log In"
          Then we see a login notice "You are logged in as firsttimer."
         
     Scenario: You can not log in with a wrong password.
         Given we are on the index page
          Then we type "admin" into the input for the username
           And we type "wrong password" into the input for the password
-          And we click "Log In"
+          When we click "Log In"
          Then we see a login notice "Invalid password. You are not logged in."
 
     Scenario: Check the user log in is possible.

@@ -71,13 +71,11 @@ class App:
 
     REGISTER["/"] = ("GET", "index")
     def index(self):
-        credentials = None # anonymous by default
-        username = request.get_cookie('username', None)
-        if username:
-            password = request.get_cookie('password', "")
-            success, login_message = self._apiv1.get_login_response(username, password)
-            if success:
-                credentials = (username, password)
+        credentials = self.get_cookie_credentials()
+        if credentials:
+            success, login_message = self._apiv1.get_login_response(credentials)
+            if not success:
+                credentials = None
         else:
             login_message = "You are not logged in."
         websites = self._apiv1.list_websites(credentials)
@@ -109,7 +107,28 @@ class App:
         response.set_cookie("password", request.forms.get('password'))
         return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
 
+    REGISTER["/save-website"] = ("POST", "save_website")
+    def save_website(self):
+        """Save a website that a user posted."""
+        source = request.forms.get('source')
+        if not source.startswith("http"):
+            source = "http://" + source
+        domain = request.forms.get('domain')
+        if not "." in domain:
+            domain += "." + self._config.domain
+        website = {
+            "domain": domain,
+            "source": source
+        }
+        print(self._apiv1.create_website(self.get_cookie_credentials(), website))
+        return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
 
+    def get_cookie_credentials(self):
+        """Return the credentials for authentication."""
+        username = request.get_cookie('username', None)
+        if not username:
+            return None # anonymous by default
+        return username, request.get_cookie('password', "")
 
 class MainApp(App):
     """Improve this app for the main process."""

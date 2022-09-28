@@ -33,7 +33,7 @@ def step_impl(context, type, tag, name):
 # Website interaction
 #
 
-@then('we click "{text}"')
+@when('we click "{text}"')
 def click(context, text):
     element = context.browser.find_element(By.XPATH, f"//*[(self::a and text()='{text}') or (self::input and @value='{text}')]")
     element.click()
@@ -51,6 +51,8 @@ def type_in(context, text, tag, name):
 def step_impl(context, domain):
     element = context.browser.find_element(By.XPATH, f"//tr[@id='{domain}']")
     context.website = element
+    print(f'website={element}')
+    return element
 
 
 @then('the website\'s {attribute} is "{value}"')
