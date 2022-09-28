@@ -1,8 +1,13 @@
-Feature: View the page
+Feature: View the main page
     In order to see which configuration is already there, I would like to see
     the front page filled with some redirects.
 
-    Scenario: test.example.org
+    Scenario: the title
+        Given we are on the index page
+         Then we see the title "Dynamic Website Configuration" 
+         Then we see a heading "Dynamic Website Configuration"
+
+    Scenario: a test.example.org entry
         Given we are on the index page
          Then we see a website for test.example.org
 #          And it is served by http://172.16.0.1

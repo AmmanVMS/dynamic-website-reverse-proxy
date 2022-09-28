@@ -26,6 +26,15 @@ class Config:
         return os.path.join(self.here, "static")
 
     @property
+    def template_lookup(self):
+        """The location of the app template files to serve.
+        
+        This replaces the template_lookup key word argument and
+        the TEMPLATE_PATH global variable of bottle.
+        """
+        return [os.path.join(self.here, "templates")]
+
+    @property
     def nginx_conf(self):
         """The location of the configuration file for nginx."""
         return self._env.get("NGINX_CONF", "/tmp/nginx.conf")

@@ -71,7 +71,8 @@ def app_client(context, port=8000):
             "DOMAIN": "example.com",
             "DATABASE": os.path.join(td, "db.pickle"),
             "NETWORK": "172.16.0.0/16",
-            "PORT": port
+            "PORT": port,
+            "DEFAULT_DOMAINS": "test.example.org->http://172.16.0.1"
         })
         context.app = app = App(config)
         bottle_app = default_app()

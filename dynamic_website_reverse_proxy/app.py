@@ -1,5 +1,5 @@
 import os
-from bottle import static_file, redirect, request, SimpleTemplate, Response, default_app, run
+from bottle import static_file, redirect, request, Response, default_app, run, template
 from .nginx import Nginx
 import ipaddress
 from .config import CONFIG
@@ -66,6 +66,15 @@ class App:
     REGISTER["/api/v1/website/list"] = ("GET", "list_websites")
     def list_websites(self):
         return self.make_response_from_api(self._apiv1.list_websites(self.request.auth))
+
+    REGISTER["/"] = ("GET", "index")
+    def index(self):
+        websites = self._apiv1.list_websites(self.request.auth)
+        return template("index.html", template_lookup=self._config.template_lookup, websites=websites, config=self._config)
+
+    REGISTER["/static/<filename>"] = ("GET", "static_files")
+    def static_files(self, filename):
+        return static_file(filename, root=self._config.static_files)        
 
     REGISTER["/source.zip"] = ("GET", "get_source")
     def get_source():

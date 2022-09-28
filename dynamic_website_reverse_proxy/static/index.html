@@ -45,20 +45,20 @@
         <td></td>
         <td>Domain</td>
         <td>Source</td>
-        <td>Owner</td>
+        <td>Creator</td>
       </tr>
-      % for website in sorted(websites["data"], key=lambda w: w["domain"]):
-        <tr id="{{ website['domain'] }}" class="website">
+      % for website in sorted(proxy.websites, key=lambda w: w.domain):
+        <tr id="{{ website.id }}" class="website">
           <td class="source">
-          % if False: #website.can_be_edited():
+          % if website.can_be_edited():
             <a href="javascript:edit('{{ website.source_url }}', '{{ website.sub_domain }}')">✎</a>
           % else:
             🔒
           % end
           </td>
-          <td class="domain"><a href="http://{{ website['domain'] }}">{{ website["domain"] }}</a></td>
-          <td class="source"><a href="{{ website['source'] }}">{{ website["source"] }}</a></td>
-          <td class="username">{{ website["owner"] }}</td>
+          <td class="domain"><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
+          <td class="source"><a href="{{ website.source_url }}">{{ website.source_url }}</a></td>
+          <td class="username">{{ website.creator.name }}</td>
         </tr>
       % end
     </table>
