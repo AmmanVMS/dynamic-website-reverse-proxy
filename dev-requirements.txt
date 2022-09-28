@@ -5,3 +5,5 @@
 #    pip-compile --output-file dev-requirements.txt dev-requirements.txt
 #
 pytest
+selenium
+behave

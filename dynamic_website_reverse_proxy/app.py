@@ -25,6 +25,7 @@ class App:
 
     def reload(self, config):
         """Load the configuration again."""
+        self._config = config
         # The database to store the proxy in.
         self._db = AppDB(config)
         # make sure the proxy uses the updated environment variables
@@ -72,9 +73,9 @@ class App:
         # from http://stackoverflow.com/questions/458436/adding-folders-to-a-zip-file-using-python#6511788
         import tempfile, shutil, os
         directory = tempfile.mkdtemp()
-        temp_path = os.path.join(directory, APPLICATION)
-        zip_path = shutil.make_archive(temp_path, "zip", CONFIG.source_code)
-        return static_file(APPLICATION + ".zip", root=directory)
+        temp_path = os.path.join(directory, self.APPLICATION)
+        zip_path = shutil.make_archive(temp_path, "zip", self._config.source_code)
+        return static_file(self.APPLICATION + ".zip", root=directory)
 
 
 class MainApp(App):
@@ -85,12 +86,12 @@ class MainApp(App):
         print(self._db.proxy.get_nginx_configuration())
 
 
-def main():
+def main(appClass=MainApp, config=CONFIG):
     """Run the server app."""
-    api = MainApp(CONFIG)
+    api = appClass(config)
     api.serve_from(default_app())
     api.update_nginx()
-    run(port=CONFIG.app_port, debug=CONFIG.debug, host="")
+    run(port=config.app_port, debug=config.debug, host="")
 
 __all__ = ["main"]
 
