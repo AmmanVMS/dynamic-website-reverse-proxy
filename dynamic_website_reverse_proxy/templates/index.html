@@ -24,18 +24,15 @@
         <input type="submit" value="Log In">
       </div>
     </form>
-    <form action="/add-page" method="post" class="bordered">
+    <form action="/add-website" method="post" class="bordered">
       <div class="form-entry">
-        <label for="input-ip">IP:</label> <input type="text" name="ip"   id="input-ip"   placeholder="{{ config.network.network_address + 1 }}">
+        <label for="input-source">IP:</label> <input type="text" name="source"   id="input-source"   placeholder="{{ config.network.network_address + 1 }}">
       </div>
       <div class="form-entry">
-        <label for="input-port">Port:</label> <input type="text" name="port" id="input-port" placeholder="80" value="80">
-      </div>
-      <div class="form-entry">
-        <label for="input-name">Name:</label> <input type="text" name="name" id="input-name" placeholder="my-service">.{{ config.domain }}
+        <label for="input-name">Domain Name:</label> <input type="text" name="domain" id="input-domain" placeholder="subdomain or subdomain.{{ config.domain }}">
       </div>
       <div class="submit">
-        <input type="submit" value="Add this Entry">
+        <input type="submit" value="Save Website">
       </div>
     </form>
     <p>
