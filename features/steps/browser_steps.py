@@ -1,17 +1,14 @@
 from behave import given, when, then
 from selenium.webdriver.common.by import By
 
+#
+# Website checks
+#
 
 @given('we are on the index page')
 def step_impl(context):
     context.browser.get(context.index_page)
     context.domain = None
-
-
-@then('we see a website for {domain}')
-def step_impl(context, domain):
-    element = context.browser.find_element(By.XPATH, f"//td[@id='{domain}']")
-    context.domain = domain
 
 @then('we see the title "{title}"')
 def step_impl(context, title):
@@ -24,6 +21,17 @@ def step_impl(context, title):
     print(dir(element))
     assert element.tag_name in "h1 h2 h3 h4 h5", f"{element.tag_name} should be a heading."
     return element
+
+#
+# Checks for proxy entries
+#
+
+@then('we see a website for {domain}')
+def step_impl(context, domain):
+    element = context.browser.find_element(By.XPATH, f"//tr[@id='{domain}']")
+    context.domain = domain
+
+
 
 @then(u'we see a website on {domain} owned by {user}')
 def step_impl(context, domain, user):
