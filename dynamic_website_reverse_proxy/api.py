@@ -71,6 +71,9 @@ class InvalidLogin(ValueError):
     """Wrong username or password."""
     http_status = HTTPStatus.UNAUTHORIZED
 
+    def __init__(self):
+        super().__init__("Invalid password. You are not logged in.")
+
 
 class APIv1:
     """This represents the API version 1"""
@@ -130,8 +133,10 @@ class APIv1:
             raise InvalidUserName(username)
         is_admin = password == self._config.admin_password and password != ""
         if username == ADMIN.id:
-            if not is_admin:
+            if self._config.admin_password == "":
                 raise InvalidUserName(username)
+            elif password != self._config.admin_password:
+                raise InvalidLogin()
             return ADMIN
         for user in self._db.proxy.users:
             if user.id == username:
@@ -139,6 +144,16 @@ class APIv1:
                     return user
                 raise InvalidLogin()
         return User(username, password)
+
+    def get_login_response(self, username, password):
+        """Try to log in a user and return an error message if it does not work."""
+        try:
+            user = self.login((username, password))
+        except InvalidUserName as e:
+            return False, str(e)
+        except InvalidLogin as e:
+            return False, str(e)
+        return True, f"You are logged in as {user.id}."
 
     @catch_and_respond
     def list_websites(self, credentials):

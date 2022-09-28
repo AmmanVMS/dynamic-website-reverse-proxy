@@ -13,6 +13,7 @@
       With this service, you can make services in the local network available to people on the Internet.
     </p>
     <form action="/login" method="post" class="bordered">
+      <div id="login-notice">{{ login_message }}</div>
       <div class="form-entry">
         <label for="input-username">Username:</label> <input type="text" name="username"   id="input-username"   placeholder="admin">
       </div>
@@ -20,7 +21,7 @@
         <label for="input-password">Password:</label> <input type="password" name="password" id="input-password" placeholder="****" value="">
       </div>
       <div class="submit">
-        <input type="submit" value="Log In/Register">
+        <input type="submit" value="Log In">
       </div>
     </form>
     <form action="/add-page" method="post" class="bordered">

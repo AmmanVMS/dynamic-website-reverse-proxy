@@ -72,7 +72,8 @@ def app_client(context, port=8000):
             "DATABASE": os.path.join(td, "db.pickle"),
             "NETWORK": "172.16.0.0/16",
             "PORT": port,
-            "DEFAULT_DOMAINS": "test.example.org->http://172.16.0.1"
+            "DEFAULT_DOMAINS": "test.example.org->http://172.16.0.1",
+            "ADMIN_PASSWORD": "12345"
         })
         context.app = app = App(config)
         bottle_app = default_app()
@@ -93,7 +94,7 @@ def before_all(context):
     shutil.rmtree(SCREENSHOT_LOCATION, ignore_errors=True)
     os.makedirs(SCREENSHOT_LOCATION, exist_ok=True)
 
-def after_step(context, step):
+def _after_step(context, step):
     # see https://behave.readthedocs.io/en/latest/tutorial.html#environmental-controls
     name = step.name
     if not getattr(context, "screenshots", 0):

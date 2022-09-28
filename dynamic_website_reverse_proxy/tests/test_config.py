@@ -67,6 +67,9 @@ def D(source_url):
 
     ("nginx_conf", "/tmp/nginx.conf", {}),
     ("nginx_conf", "/tets/teststs", {"NGINX_CONF": "/tets/teststs"}),
+
+    ("admin_password", "", {}),
+    ("admin_password", "test123", {"ADMIN_PASSWORD": "test123"}),
 ])
 def test_parsing(attr, expected, env):
     """Test the parsing of the configuration."""

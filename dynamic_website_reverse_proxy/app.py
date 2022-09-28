@@ -1,5 +1,5 @@
 import os
-from bottle import static_file, redirect, request, Response, default_app, run, template
+from bottle import static_file, redirect, request, Response, default_app, run, template, response
 from .nginx import Nginx
 import ipaddress
 from .config import CONFIG
@@ -9,6 +9,8 @@ import urllib
 from .users import ANONYMOUS, ADMIN
 import json
 from .api import APIv1
+from http import HTTPStatus
+
 
 # environment variables
 HERE = os.path.dirname(__file__ or ".")
@@ -21,7 +23,7 @@ class App:
     def __init__(self, config):
         """Create a new app with a configuration."""
         self.reload(config)
-        self.request = request
+        self.request = request # for mocking in tests
 
     def reload(self, config):
         """Load the configuration again."""
@@ -69,8 +71,22 @@ class App:
 
     REGISTER["/"] = ("GET", "index")
     def index(self):
-        websites = self._apiv1.list_websites(self.request.auth)
-        return template("index.html", template_lookup=self._config.template_lookup, websites=websites, config=self._config)
+        credentials = None # anonymous by default
+        username = request.get_cookie('username', None)
+        if username:
+            password = request.get_cookie('password', "")
+            success, login_message = self._apiv1.get_login_response(username, password)
+            if success:
+                credentials = (username, password)
+        else:
+            login_message = "You are not logged in."
+        websites = self._apiv1.list_websites(credentials)
+        return template("index.html",
+            template_lookup=self._config.template_lookup,
+            websites=websites,
+            config=self._config,
+            login_message=login_message
+        )
 
     REGISTER["/static/<filename>"] = ("GET", "static_files")
     def static_files(self, filename):
@@ -85,6 +101,14 @@ class App:
         temp_path = os.path.join(directory, self.APPLICATION)
         zip_path = shutil.make_archive(temp_path, "zip", self._config.source_code)
         return static_file(self.APPLICATION + ".zip", root=directory)
+
+    REGISTER["/login"] = ("POST", "login")
+    def login(self):
+        """Log in a user."""
+        response.set_cookie("username", request.forms.get('username'))
+        response.set_cookie("password", request.forms.get('password'))
+        return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
+
 
 
 class MainApp(App):

@@ -89,6 +89,11 @@ class Config:
         return self._env.get("SOURCE_CODE", self.here)
 
     @property
+    def admin_password(self):
+        """The password for the admin account - "" by default."""
+        return self._env.get("ADMIN_PASSWORD", "")
+
+    @property
     def network(self):
         """The network to choose ip addresses from that are targets."""
         return ipaddress.ip_network(self._env.get("NETWORK", "10.0.0.0/8"))
