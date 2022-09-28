@@ -20,7 +20,7 @@ Examples: User creates a subdomain website
     | logged in as user  | user-page | https://172.16.0.23:4443  | user-page.example.com | https://172.16.0.23:4443 | user  |
     | logged in as admin | a         | 172.16.0.23:8000          | a.example.com         | http://172.16.0.23:8000  | admin |
 
-Examples: A user creates a website with a fully qualified domain name
+Examples: A user creates a website with a fqdn
     | start              | domain        | input source | website domain | website source      | owner |
-    | logged in as user2 | x.example.com | 172.16.3.3   | x.example.com  | http://172.16.0.3   | user2 |
+    | logged in as user2 | x.example.com | 172.16.3.3   | x.example.com  | http://172.16.3.3   | user2 |
     | logged in as admin | a.test        | 172.16.0.100 | a.test         | http://172.16.0.100 | admin |

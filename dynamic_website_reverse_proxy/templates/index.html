@@ -45,7 +45,7 @@
         <td>Source</td>
         <td>Owner</td>
       </tr>
-      % for website in sorted(websites["data"], key=lambda w: w["domain"]):
+      % for website in sorted(websites["data"], key=lambda w: tuple(reversed(w["domain"].split(".")))):
         <tr id="{{ website['domain'] }}" class="website">
           <td>
           % if False: #website.can_be_edited():

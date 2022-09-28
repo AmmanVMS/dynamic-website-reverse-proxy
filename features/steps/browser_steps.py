@@ -50,15 +50,13 @@ def type_in(context, text, tag, name):
 @then('we see a website for {domain}')
 def step_impl(context, domain):
     element = context.browser.find_element(By.XPATH, f"//tr[@id='{domain}']")
-    context.website = element
-    print(f'website={element}')
-    return element
-
+    context.domain = domain
+    
 
 @then('the website\'s {attribute} is "{value}"')
 def step_impl(context, attribute, value):
-    assert getattr(context, "website", None) is not None, "Error in the order of the steps: there should be a 'we see a website for ...' step before this one!"
-    element = context.website.find_element(By.XPATH, f"//*[@class='{attribute}']")
+    assert getattr(context, "domain", None) is not None, "Error in the order of the steps: there should be a 'we see a website for ...' step before this one!"
+    element = context.browser.find_element(By.XPATH, f"//tr[@id='{context.domain}']//*[@class='{attribute}']")
     assert element.text == value, f"The text in {element} should be '{value}' and not '{element.text}'."
 
 #
