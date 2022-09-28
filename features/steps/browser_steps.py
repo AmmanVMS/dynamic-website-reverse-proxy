@@ -29,11 +29,12 @@ def step_impl(context, title):
 @then('we see a website for {domain}')
 def step_impl(context, domain):
     element = context.browser.find_element(By.XPATH, f"//tr[@id='{domain}']")
-    context.domain = domain
+    context.website = element
 
 
-
-@then(u'we see a website on {domain} owned by {user}')
-def step_impl(context, domain, user):
-    raise NotImplementedError(u'STEP: Then we see a website on test.example.org owned by system')
+@then('the website\'s {attribute} is "{value}"')
+def step_impl(context, attribute, value):
+    assert getattr(context, "website", None) is not None, "Error in the order of the steps: there should be a 'we see a website for ...' step before this one!"
+    element = context.website.find_element(By.XPATH, f"//*[@class='{attribute}']")
+    assert element.text == value, f"The text in {element} should be '{value}' and not '{element.text}'."
 

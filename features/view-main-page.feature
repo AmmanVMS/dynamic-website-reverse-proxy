@@ -10,6 +10,6 @@ Feature: View the main page
     Scenario: a test.example.org entry
         Given we are on the index page
          Then we see a website for test.example.org
-#          And it is served by http://172.16.0.1
-#          And it is owned by system
-
+          And the website's domain is "test.example.org"
+          And the website's source is "http://172.16.0.1"
+          And the website's owner is "🔒system"
