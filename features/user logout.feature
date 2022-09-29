@@ -20,7 +20,7 @@ Examples: User logins to use and test.
         Given we are logged in as <username>
          Then we do not see a button "Log In"
           And we do not see a text input for the username
-         Then we do not see a password input for the password
+          And we do not see a password input for the password
 
 Examples: User logins to use and test.
     | username |

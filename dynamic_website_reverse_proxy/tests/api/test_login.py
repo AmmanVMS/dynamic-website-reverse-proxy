@@ -26,7 +26,7 @@ class TestUserIdentification:
         assert error.http_status == HTTPStatus.NOT_ACCEPTABLE
 
     def test_invalid_login_http_status(self):
-        error = InvalidLogin("")
+        error = InvalidLogin()
         assert error.http_status == HTTPStatus.UNAUTHORIZED
 
     @pytest.mark.parametrize("name", ["Alice", "system"])
@@ -65,7 +65,7 @@ class TestUserIdentification:
     @pytest.mark.parametrize("username,password,Error", [
         (USER2.id, "", InvalidLogin), # empty admin password
         (ADMIN.id, "", InvalidUserName), # empty admin password
-        (ADMIN.id, "asdasd", InvalidUserName), # wrong password
+        (ADMIN.id, "asdasd", InvalidLogin), # wrong password
     ])
     def test_login_fails_with_empty_admin_password(self, apiv1_obj, Error, username, password, apiv1_config, db):
         """Certain logins should not work."""

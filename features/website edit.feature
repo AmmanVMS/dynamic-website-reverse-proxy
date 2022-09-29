@@ -1,5 +1,5 @@
-Feature: Create websites with redirects.
-    Users should be able to create websites and edit them.
+Feature: Edit already existing websites.
+    Users should be able to edit websites they created and not those of other people.
 
     Scenario Outline: We can create a website entry.
         Given we are <start>
