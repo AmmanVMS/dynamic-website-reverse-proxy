@@ -1,5 +1,5 @@
-Feature: Edit already existing websites.
-    Users should be able to edit websites they created and not those of other people.
+Feature: Edit already existing websites that you are not allowed to edit.
+    Users should not be able to edit other uers' websites.
 
     Scenario Outline: A user can not edit the website of another user.
         Given <other user>'s website <domain> is served by http://172.16.0.99

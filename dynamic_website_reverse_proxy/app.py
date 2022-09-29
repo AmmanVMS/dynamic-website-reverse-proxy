@@ -127,8 +127,10 @@ class App:
         }
         result = self._apiv1.create_website(self.get_cookie_credentials(), website)
         if result["status"] == HTTPStatus.CREATED:
-            return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
-        query = urlencode({"website-notice": result["error"]["message"]})
+            message = f"Website {result['data']['domain']} saved."
+        else:
+            message = result["error"]["message"]
+        query = urlencode({"website-notice": message})
         return redirect(f"/?{query}", HTTPStatus.MOVED_PERMANENTLY)
 
     def get_cookie_credentials(self):

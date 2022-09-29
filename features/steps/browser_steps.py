@@ -100,6 +100,7 @@ USERS = {
     "admin": "12345" # environment.py
 }
 
+@When("we log in as {username}")
 @Given("we are logged in as {username}")
 def login_user(context, username):
     visit_index_page(context)
