@@ -129,6 +129,10 @@ Run the tests
 
     tox
 
+Run the tests for the website only:
+
+    tox -e web
+
 Related Work
 ------------
 
