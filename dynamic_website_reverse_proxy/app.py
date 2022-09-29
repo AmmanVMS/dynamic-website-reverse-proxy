@@ -72,18 +72,14 @@ class App:
     REGISTER["/"] = ("GET", "index")
     def index(self):
         credentials = self.get_cookie_credentials()
-        if credentials:
-            success, login_message = self._apiv1.get_login_response(credentials)
-            if not success:
-                credentials = None
-        else:
-            login_message = "You are not logged in."
+        logged_in, login_message, credentials = self._apiv1.get_login_response(credentials)
         websites = self._apiv1.list_websites(credentials)
         return template("index.html",
             template_lookup=self._config.template_lookup,
             websites=websites,
             config=self._config,
-            login_message=login_message
+            login_message=login_message,
+            logged_in=logged_in,
         )
 
     REGISTER["/static/<filename>"] = ("GET", "static_files")
@@ -105,6 +101,13 @@ class App:
         """Log in a user."""
         response.set_cookie("username", request.forms.get('username'))
         response.set_cookie("password", request.forms.get('password'))
+        return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
+
+    REGISTER["/logout"] = ("POST", "logout")
+    def logout(self):
+        """Log in a user."""
+        response.delete_cookie("username")
+        response.delete_cookie("password")
         return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
 
     REGISTER["/save-website"] = ("POST", "save_website")

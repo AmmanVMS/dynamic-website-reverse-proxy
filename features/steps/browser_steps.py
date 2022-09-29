@@ -23,11 +23,36 @@ def step_impl(context, title):
     assert element.tag_name in "h1 h2 h3 h4 h5", f"{element.tag_name} should be a heading."
     return element
 
+XPATH_TAG_WITH_TYPE_AND_NAME = "//{tag}[@type='{type}' and @name='{name}']"
+
 @then('we see a {type} {tag} for the {name}')
 def step_impl(context, type, tag, name):
     """Find an element of the description."""
     # @type from https://stackoverflow.com/a/24370382/1320237
-    element = context.browser.find_element(By.XPATH, f"//{tag}[@type='{type}' and @name='{name}']")
+    element = context.browser.find_element(By.XPATH, XPATH_TAG_WITH_TYPE_AND_NAME.format(tag=tag, type=type, name=name))
+
+@then('we do not see a {type} {tag} for the {name}')
+def step_impl(context, type, tag, name):
+    """Find no elements of the description."""
+    # @type from https://stackoverflow.com/a/24370382/1320237
+    elements = context.browser.find_elements(By.XPATH, XPATH_TAG_WITH_TYPE_AND_NAME.format(tag=tag, type=type, name=name))
+    assert len(elements) == 0, f"There should not be any element but there are {elements}."
+
+XPATH_BUTTON_WITH_TEXT = "//input[(@type='button' or @type='submit') and @value='{text}']"
+
+@then('we see a button "{text}"')
+def step_impl(context, text):
+    """There is a button."""
+    # @type from https://stackoverflow.com/a/24370382/1320237
+    element = context.browser.find_element(By.XPATH, XPATH_BUTTON_WITH_TEXT.format(text=text))
+
+@then('we do not see a button "{text}"')
+def step_impl(context, text):  
+    """There is a button."""
+    # @type from https://stackoverflow.com/a/24370382/1320237
+    elements = context.browser.find_elements(By.XPATH, XPATH_BUTTON_WITH_TEXT.format(text=text))
+    assert len(elements) == 0, f"There should not be a button with '{text}' on it but there is: {elements}."
+
 
 #
 # Website interaction

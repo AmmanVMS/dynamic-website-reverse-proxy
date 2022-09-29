@@ -46,6 +46,10 @@ class UniqueUser:
     def __repr__(self):
         return f"<{self.__class__.__name__} {self._permission_name}>"
 
+    def is_anonymous(self):
+        """Whether this user is anonymous."""
+        return self == ANONYMOUS
+
 SYSTEM = UniqueUser("system", "🔒system", "SYSTEM")
 ADMIN = UniqueUser("admin", "admin", "ADMIN")
 ANONYMOUS = UniqueUser("anonymous", "🔓anonymous", "ANONYMOUS")
@@ -107,6 +111,9 @@ class User:
     def __hash__(self):
         return hash(self.id)
 
+    def is_anonymous(self):
+        """Whether this user is anonymous."""
+        return False
 
 USER1 = User("Alice")
 USER1.test_password = "1234"

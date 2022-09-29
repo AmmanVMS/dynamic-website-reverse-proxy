@@ -13,3 +13,9 @@ Feature: View the main page
           And the website's domain is "test.example.org"
           And the website's source is "http://172.16.0.1"
           And the website's owner is "🔒system"
+
+    Scenario: Log In fields
+        Given we are on the index page
+         Then we see a button "Log In"
+          And we see a text input for the username
+          And we see a password input for the password

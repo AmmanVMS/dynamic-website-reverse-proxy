@@ -12,6 +12,14 @@
     <p>
       With this service, you can make services in the local network available to people on the Internet.
     </p>
+    % if logged_in:
+    <form action="/logout" method="post" class="bordered">
+      <div id="login-notice">{{ login_message }}</div>
+      <div class="submit">
+        <input type="submit" value="Log Out">
+      </div>
+    </form>
+    % else:
     <form action="/login" method="post" class="bordered">
       <div id="login-notice">{{ login_message }}</div>
       <div class="form-entry">
@@ -24,6 +32,7 @@
         <input type="submit" value="Log In">
       </div>
     </form>
+    % end
     <form action="/save-website" method="post" class="bordered">
       <div class="form-entry">
         <label for="input-source">IP:</label> <input type="text" name="source"   id="input-source"   placeholder="{{ config.network.network_address + 1 }}">

@@ -38,4 +38,3 @@ Feature: Log in on the main page
     Scenario: You are not logged in by default.
         Given we are on the index page
          Then we see a login notice "You are not logged in."
-

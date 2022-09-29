@@ -150,10 +150,12 @@ class APIv1:
         try:
             user = self.login(credentials)
         except InvalidUserName as e:
-            return False, str(e)
+            return False, str(e), None
         except InvalidLogin as e:
-            return False, str(e)
-        return True, f"You are logged in as {user.id}."
+            return False, str(e), None
+        if user.is_anonymous():
+            return False, "You are not logged in.", credentials
+        return True, f"You are logged in as {user.id}.", credentials
 
     @catch_and_respond
     def list_websites(self, credentials):
