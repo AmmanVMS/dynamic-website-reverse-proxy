@@ -67,9 +67,10 @@ def persistent_db(tmpdir):
 @fixture
 def db():
     """The database to operate the apiv1 on."""
-    db = Mock()
+    db = Mock(name="db")
     db.proxy.users = [USER1, USER2]
     db.proxy.websites = []
+    db.proxy.get.return_value = None
     return db
 
 class TestPermissions:

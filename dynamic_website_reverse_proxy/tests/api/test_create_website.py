@@ -71,6 +71,7 @@ class TestCreateWebsite:
         ({"domain": ".asd", "source": "http://10.0.0.4"}, "The field 'domain' must be a valid domain name."),
         ({"domain": "test.example.com", "source": "http10.0.0.4"}, "The field 'source' must be a valid http/https url."),
         ({"domain": "test.example.com", "source": "ftp://10.0.0.4"}, "The field 'source' must be a valid http/https url."),
+        ({"domain": "test.example.com", "source": ""}, "The field 'source' must be a valid http/https url."),
         ({"domain": "test.example.com", "source": "https://10.0.100.4"}, "The field 'source' must be inside 10.0.0.0/24."),
     ])
     def test_fields_missing(self, apiv1, any_user, post, message):

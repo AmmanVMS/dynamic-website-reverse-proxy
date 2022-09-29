@@ -31,6 +31,14 @@ def step_impl(context, type, tag, name):
     # @type from https://stackoverflow.com/a/24370382/1320237
     element = context.browser.find_element(By.XPATH, XPATH_TAG_WITH_TYPE_AND_NAME.format(tag=tag, type=type, name=name))
 
+@then('we see "{text}" in the {type} {tag} for the {name}')
+def step_impl(context, text, type, tag, name):
+    """Find an element of the description."""
+    # @type from https://stackoverflow.com/a/24370382/1320237
+    element = context.browser.find_element(By.XPATH, XPATH_TAG_WITH_TYPE_AND_NAME.format(tag=tag, type=type, name=name))
+    value = element.get_attribute("value")
+    assert value == text, f"Expected {element}.value to be '{text}' but it is '{value}'."
+
 @then('we do not see a {type} {tag} for the {name}')
 def step_impl(context, type, tag, name):
     """Find no elements of the description."""
@@ -62,6 +70,13 @@ def step_impl(context, text):
 def click(context, text):
     element = context.browser.find_element(By.XPATH, f"//*[(self::a and text()='{text}') or (self::input and @value='{text}')]")
     element.click()
+
+@when('we click "{text}" in {id}')
+def click_in(context, text, id):
+    """Click a link or button inside of another element."""
+    element = context.browser.find_element(By.XPATH, f"//*[@id='{id}']//*[(self::a and text()='{text}') or (self::input and @value='{text}')]")
+    element.click()
+
 
 @then('we type "{text}" into the {tag} for the {name}')
 def type_in(context, text, tag, name):

@@ -60,8 +60,8 @@
       % for website in sorted(websites["data"], key=lambda w: tuple(reversed(w["domain"].split(".")))):
         <tr id="{{ website['domain'] }}" class="website">
           <td>
-          % if False: #website.can_be_edited():
-            <a href="javascript:edit('{{ website.source_url }}', '{{ website.sub_domain }}')">✎</a>
+          % if not "🔒" in website["owner"]:
+            <a href="javascript:edit('{{ website['source'] }}', '{{ website['domain'] }}')">✎</a>
           % else:
             🔒
           % end
