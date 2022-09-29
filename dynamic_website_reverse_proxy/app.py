@@ -10,6 +10,7 @@ from .users import ANONYMOUS, ADMIN
 import json
 from .api import APIv1
 from http import HTTPStatus
+from urllib.parse import urlencode
 
 
 # environment variables
@@ -80,6 +81,7 @@ class App:
             config=self._config,
             login_message=login_message,
             logged_in=logged_in,
+            query=request.query
         )
 
     REGISTER["/static/<filename>"] = ("GET", "static_files")
@@ -123,8 +125,11 @@ class App:
             "domain": domain,
             "source": source
         }
-        print(self._apiv1.create_website(self.get_cookie_credentials(), website))
-        return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
+        result = self._apiv1.create_website(self.get_cookie_credentials(), website)
+        if result["status"] == HTTPStatus.CREATED:
+            return redirect("/", HTTPStatus.MOVED_PERMANENTLY)
+        query = urlencode({"website-notice": result["error"]["message"]})
+        return redirect(f"/?{query}", HTTPStatus.MOVED_PERMANENTLY)
 
     def get_cookie_credentials(self):
         """Return the credentials for authentication."""

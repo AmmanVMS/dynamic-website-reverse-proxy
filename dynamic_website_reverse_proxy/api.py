@@ -112,6 +112,10 @@ class APIv1:
         else:
             website = FullWebsite(data["source"], domain, self._config)
         website.change_owner_to(user)
+        existing_website = self._db.proxy.get(website.id)
+        print(f"new: {website} existing: {existing_website}")
+        if existing_website:
+            self.check_if(user.can.edit(existing_website))
         self.check_if(user.can.create(website))
         self._db.proxy.add(website)
         return {

@@ -101,9 +101,18 @@ USERS = {
 }
 
 @Given("we are logged in as {username}")
-def step_impl(context, username):
+def login_user(context, username):
     visit_index_page(context)
     type_in(context, username, "input", "username")
     type_in(context, USERS[username], "input", "password")
     click(context, "Log In")
     notice_says(context, "login", f"You are logged in as {username}.")
+
+@Given("{username}'s website {domain} is served by {source}")
+def create_website(context, username, domain, source):
+    login_user(context, username)
+    type_in(context, domain, "input", "domain")
+    type_in(context, source, "input", "source")
+    click(context, "Save Website")
+    click(context, "Log Out")
+    

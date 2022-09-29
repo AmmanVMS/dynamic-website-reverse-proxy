@@ -35,11 +35,14 @@
     % end
     <form action="/save-website" method="post" class="bordered">
       <div class="form-entry">
-        <label for="input-source">IP:</label> <input type="text" name="source"   id="input-source"   placeholder="{{ config.network.network_address + 1 }}">
+        <label for="input-source">Source:</label> <input type="text" name="source"   id="input-source"   placeholder="http://{{ config.network.network_address + 1 }}">
       </div>
       <div class="form-entry">
         <label for="input-name">Domain Name:</label> <input type="text" name="domain" id="input-domain" placeholder="subdomain or subdomain.{{ config.domain }}">
       </div>
+      % if "website-notice" in query:
+      <div id="website-notice">{{ query["website-notice"] }}</div>
+      % end  
       <div class="submit">
         <input type="submit" value="Save Website">
       </div>

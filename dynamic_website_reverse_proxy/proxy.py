@@ -41,7 +41,8 @@ class Proxy:
         - domain is the domain name of the service. New entries will be sub-entries of this.
         """
         self._websites = {} # id -> website
-        self._config = config
+        self._config_websites = []
+        self.reload(config)
 
     @property
     def domain(self):
@@ -59,12 +60,17 @@ class Proxy:
         return self.NGINX_CONFIGURATION.format(websites="\n".join(websites))
     
     @property
-    def websites(self):
-        """Read-only access to the websites of the proxy."""
+    def _websites_with_config(self):    
+        """The websites including the configured ones."""
         websites = self._websites.copy()
         for website in self._config.websites:
             websites[website.id] = website
-        return list(websites.values())
+        return websites
+
+    @property
+    def websites(self):
+        """Read-only access to the websites of the proxy."""
+        return list(self._websites_with_config.values())
 
     def reload(self, config):
         """Change the configuration of the proxy."""
@@ -77,7 +83,7 @@ class Proxy:
 
     def get(self, website_id):
         """Get a website from its id."""
-        return self._websites.get(website_id)
+        return self._websites_with_config.get(website_id)
 
 
 __all__ = ["Proxy"]
