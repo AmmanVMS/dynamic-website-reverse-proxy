@@ -4,6 +4,8 @@ Dynamic Website Reverse Proxy
 [![build-docker-image](https://github.com/AmmanVMS/dynamic-website-reverse-proxy/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/AmmanVMS/dynamic-website-reverse-proxy/actions/workflows/build-docker-image.yml)
 [![tests](https://github.com/AmmanVMS/dynamic-website-reverse-proxy/actions/workflows/tests.yml/badge.svg)](https://github.com/AmmanVMS/dynamic-website-reverse-proxy/actions/workflows/tests.yml)
 
+![Screenshot of the service running](https://user-images.githubusercontent.com/564768/193698960-897e506f-83e6-4770-bcdf-67a00164c52e.png)
+
 This is a tool to make local services served in a community network available to the outside internet.
 The intention is to
 1. lower the bar to create internet services
