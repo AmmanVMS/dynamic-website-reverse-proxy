@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="264.67706mm"
+   height="101.8551mm"
+   viewBox="0 0 264.67706 101.8551"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="use-case.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.85042245"
+     inkscape:cx="498.57574"
+     inkscape:cy="355.70557"
+     inkscape:window-width="1600"
+     inkscape:window-height="851"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-midpoints="true"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     lock-margins="false"
+     fit-margin-right="10"
+     fit-margin-bottom="10" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22267" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path22261" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-4.323247,-22.519033)">
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect17609"
+       width="58.136406"
+       height="46.340523"
+       x="21.374178"
+       y="37.897999" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect17611"
+       width="58.136406"
+       height="9.6762648"
+       x="21.374178"
+       y="37.897999" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect17613"
+       width="58.136406"
+       height="9.6762648"
+       x="21.374178"
+       y="47.574261" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="24.814966"
+       y="53.461903"
+       id="text17617"><tspan
+         sodipodi:role="line"
+         id="tspan17615"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="24.814966"
+         y="53.461903">http://my-service.example.com</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="24.814966"
+       y="44.108158"
+       id="text17621"><tspan
+         sodipodi:role="line"
+         id="tspan17619"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="24.814966"
+         y="44.108158">Web Browser                                   X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="93.328957"
+       y="51.734024"
+       id="text4148"><tspan
+         sodipodi:role="line"
+         id="tspan4146"
+         style="stroke-width:0.264583"
+         x="93.328957"
+         y="51.734024">Internet</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="38.567677"
+       y="57.489002"
+       id="text10158"><tspan
+         sodipodi:role="line"
+         id="tspan10156"
+         style="stroke-width:0.264583"
+         x="38.567677"
+         y="57.489002" /></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect12362"
+       width="58.136406"
+       height="46.340523"
+       x="14.823247"
+       y="67.533615" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect12430"
+       width="58.136406"
+       height="9.6762648"
+       x="14.823247"
+       y="67.533615" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect16901"
+       width="58.136406"
+       height="9.6762648"
+       x="14.823247"
+       y="77.209877" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="18.264034"
+       y="83.097519"
+       id="text16905"><tspan
+         sodipodi:role="line"
+         id="tspan16903"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="18.264034"
+         y="83.097519">https://test.example.com</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="18.264034"
+       y="73.743774"
+       id="text16989"><tspan
+         sodipodi:role="line"
+         id="tspan16987"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="18.264034"
+         y="73.743774">Web Browser                                   X</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 72.959655,90.703875 H 98.662589 V 73.568353 h 22.381981"
+       id="path22256"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 79.510582,53.659924 H 105.214 v 8.266757 h 15.83057"
+       id="path22614"
+       sodipodi:nodetypes="cccc" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect23469"
+       width="58.333298"
+       height="29.788069"
+       x="120.94613"
+       y="48.182976" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect23471"
+       width="58.136406"
+       height="9.6762648"
+       x="121.04457"
+       y="48.281422" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="124.48536"
+       y="54.491581"
+       id="text23475"><tspan
+         sodipodi:role="line"
+         id="tspan23473"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="124.48536"
+         y="54.491581">Dynamic Website Proxy</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="124.48536"
+       y="64.545753"
+       id="text25665"><tspan
+         sodipodi:role="line"
+         id="tspan25663"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="124.48536"
+         y="64.545753">Open Port: http (80)</tspan><tspan
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="124.48536"
+         y="68.955467"
+         id="tspan28827" /><tspan
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="124.48536"
+         y="73.365181"
+         id="tspan28829">Open Port: https (443)</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect23469-6"
+       width="58.467487"
+       height="20.617752"
+       x="200.19835"
+       y="32.853493" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect23471-2"
+       width="58.136406"
+       height="9.6762648"
+       x="200.36388"
+       y="33.019035" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="203.80467"
+       y="39.229195"
+       id="text23475-8"><tspan
+         sodipodi:role="line"
+         id="tspan23473-4"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="203.80467"
+         y="39.229195">Internal Service</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="203.80467"
+       y="49.283356"
+       id="text25665-7"><tspan
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="203.80467"
+         y="49.283356"
+         id="tspan28829-0">Open Port: http (8000)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1,1;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 111.58925,37.897999 -3.4e-4,75.976141"
+       id="path34132"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="-99.546432"
+       y="109.66737"
+       id="text34466"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan34464"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-99.546432"
+         y="109.66737">Firewall     with      Port       Forwarding</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect47788"
+       width="58.467487"
+       height="20.617752"
+       x="200.19835"
+       y="74.338829" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.999514;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect47790"
+       width="58.136406"
+       height="9.6762648"
+       x="200.36388"
+       y="74.504372" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="203.80467"
+       y="80.714531"
+       id="text47794"><tspan
+         sodipodi:role="line"
+         id="tspan47792"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="203.80467"
+         y="80.714531">Other Internal Service</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;text-anchor:start;stroke-width:0.264583"
+       x="203.80467"
+       y="90.768692"
+       id="text47798"><tspan
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="203.80467"
+         y="90.768692"
+         id="tspan47796">Open Port: http (5000)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 179.78096,73.770522 h 10.08671 v 15.412752 h 8.78343"
+       id="path51304"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="m 179.79259,63.795186 h 9.99273 V 47.945797 h 8.7016"
+       id="path51306"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52777px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;text-anchor:middle;stroke-width:0.264583"
+       x="182.65836"
+       y="67.84343"
+       id="text51416"><tspan
+         sodipodi:role="line"
+         id="tspan51414"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="182.65836"
+         y="67.84343">Interal</tspan><tspan
+         sodipodi:role="line"
+         style="text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="182.65836"
+         y="72.253143"
+         id="tspan52527">Network</tspan></text>
+  </g>
+</svg>
