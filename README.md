@@ -11,7 +11,7 @@ The intention is to
 1. lower the bar to create internet services
 2. increase accessibility from inside and outside the community network and thus make services in the network more attractive
 
-![Image showing a diagram of the use-case](images/use-case.png?)
+![Image showing a diagram of the use-case](images/use-case.svg)
 
 Using the Server
 ----------------
