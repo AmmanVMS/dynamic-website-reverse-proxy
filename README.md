@@ -107,7 +107,7 @@ This is configuration you can touch:
   This is the directory the currently running source code can be obtained from.
   - default for the Python app is the module directory.
   - default for the docker container is `/app`
-- ` NGINX_CONF`
+- `NGINX_CONF`
   This is the path to the file with the replaced `nginx` configuration in it.
   - default is `/tmp/nginx.conf`.
   - if set to `none`, `nginx` will not be configured.
