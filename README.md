@@ -110,7 +110,7 @@ This is configuration you can touch:
 - `NGINX_CONF`
   This is the path to the file with the replaced `nginx` configuration in it.
   - default is `/tmp/nginx.conf`.
-  - if set to `none`, `nginx` will not be configured.
+  - if set to `` (empty), `nginx` will not be configured.
   `nginx` will only be configured if installed on the system.`
 - `PERMISSIONS` defaults to `./dynamic_website_reverse_proxy/permissions.txt`  
   This is a list of actions for users on this system.
