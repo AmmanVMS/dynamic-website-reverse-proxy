@@ -107,6 +107,7 @@ def apiv1_config(permissions, db):
         "domain": "example.com",
         "admin_password": "secure",
         "websites": db.proxy.websites,
+        "nginx_conf": ""
     }
     return Config(permissions=permissions, **config)
 

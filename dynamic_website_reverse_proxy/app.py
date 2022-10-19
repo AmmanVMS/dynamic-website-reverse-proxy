@@ -1,6 +1,6 @@
 import os
 from bottle import static_file, redirect, request, Response, default_app, run, template, response
-from .nginx import Nginx
+from .nginx import NginxDatabaseObserver
 import ipaddress
 from .config import CONFIG
 from .app_db import AppDB
@@ -15,6 +15,7 @@ from urllib.parse import urlencode
 
 # environment variables
 HERE = os.path.dirname(__file__ or ".")
+
 
 class App:
     """This is an app that uses bottle to serve web requests."""
@@ -34,12 +35,7 @@ class App:
         # make sure the proxy uses the updated environment variables
         self._db.proxy.reload(config)
         self._apiv1 = APIv1(self._db, config)
-        self._nginx = Nginx(config)
-
-    def update_nginx(self):
-        """Restart nginx with a new configuration."""
-        if self._nginx.is_available():
-            self._nginx.configure(self._db.proxy.get_nginx_configuration())
+        NginxDatabaseObserver(config, self._db)
 
     def make_response_from_api(self, result):
         """Return a bottle response from the API call."""
@@ -152,7 +148,6 @@ def main(appClass=MainApp, config=CONFIG):
     """Run the server app."""
     api = appClass(config)
     api.serve_from(default_app())
-    api.update_nginx()
     run(port=config.app_port, debug=config.debug, host="")
 
 __all__ = ["main"]

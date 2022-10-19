@@ -73,7 +73,8 @@ def app_client(context, port=8000):
             "NETWORK": "172.16.0.0/16",
             "PORT": port,
             "DEFAULT_DOMAINS": "test.example.org->http://172.16.0.1",
-            "ADMIN_PASSWORD": "12345"
+            "ADMIN_PASSWORD": "12345",
+            "NGINX_CONF": "",
         })
         context.app = app = App(config)
         bottle_app = default_app()

@@ -6,8 +6,6 @@ import subprocess
 import tempfile
 import os
 
-# the value on which to ignore to configure nginx
-DO_NOT_CONFIGURE_NGINX = "none"
 
 class Nginx:
     """An object to handle the webserver."""
@@ -29,8 +27,20 @@ class Nginx:
 
     def is_available(self):
         """Return whether nginx is available."""
-        return subprocess.run(["which", "nginx"], stdout=None).returncode == 0 and self._config.nginx_conf != DO_NOT_CONFIGURE_NGINX
+        return self._config.nginx_conf and subprocess.run(["which", "nginx"], stdout=None).returncode == 0
 
 
-__all__ = ["configure_nginx", "nginx_is_available"]
+class NginxDatabaseObserver:
+    """Observe the database and update nginx."""
 
+    def __init__(self, config, db):
+        """Create an instance."""
+        self._db = db
+        self._nginx = Nginx(config)
+        db.attach(self)
+        self.update()
+
+    def update(self):
+        """Restart nginx with a new configuration."""
+        if self._nginx.is_available():
+            self._nginx.configure(self._db.proxy.get_nginx_configuration())
