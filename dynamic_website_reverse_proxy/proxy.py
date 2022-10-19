@@ -41,7 +41,6 @@ class Proxy:
         - domain is the domain name of the service. New entries will be sub-entries of this.
         """
         self._websites = {} # id -> website
-        self._config_websites = []
         self.reload(config)
 
     @property

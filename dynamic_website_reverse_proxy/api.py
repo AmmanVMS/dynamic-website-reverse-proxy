@@ -118,6 +118,7 @@ class APIv1:
             self.check_if(user.can.edit(existing_website))
         self.check_if(user.can.create(website))
         self._db.proxy.add(website)
+        self._db.save()
         return {
             "status": HTTPStatus.CREATED,
             "data": {

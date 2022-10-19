@@ -103,3 +103,25 @@ class TestCreateWebsite:
         """The website is not added if no permission is given."""
         apiv1.create_website(user, post)
         db.proxy.add.assert_not_called()
+
+    @no_permission
+    def test_database_is_not_saved_when_no_permission_is_granted(self, db, apiv1, user, post, message):
+        """Make sure that the database also is saved."""
+        apiv1.create_website(C_ADMIN, REQUEST1)
+        db.save.assert_not_called()
+        
+    @no_permission
+    def test_database_is_not_saved_when_no_permission_is_granted(self, db, apiv1, user, post, message):
+        """Make sure that the database is not saved when no permission is given."""
+        apiv1.create_website(user, post)
+        db.save.assert_not_called()
+
+    @pytest.mark.parametrize("user,post", [
+        (C_USER1, REQUEST1),
+        (C_ANONYMOUS, REQUEST1),
+        (C_ADMIN, REQUEST2),
+    ])
+    def test_database_is_saved(self, db, apiv1, user, post, permission_granted):
+        """Make sure that the database also is saved."""
+        apiv1.create_website(user, post)
+        db.save.assert_called_once()
