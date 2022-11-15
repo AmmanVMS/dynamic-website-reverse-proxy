@@ -140,6 +140,7 @@ Run the tests for the website only:
 Related Work
 ------------
 
+- [Nginx Proxy Manager](https://nginxproxymanager.com)
 - [Diskussion im FreiFunk-Forum](https://forum.freifunk.net/t/lokale-webdienste-freigeben/18625)
 - [Freifunk-Website-Proxy](https://github.com/Freifunk-Potsdam/freifunk-website-proxy) - this project's base
 
